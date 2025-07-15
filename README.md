@@ -34,6 +34,13 @@ ros2 run teleop_twist_keyboard  teleop_twist_keyboard --ros-args -r /cmd_vel:=/d
 
 ```
 
+## Run with launch files
+
+```bash
+ros2 launch my_robot_bringup my_robot.launch.xml
+ros2 run teleop_twist_keyboard  teleop_twist_keyboard --ros-args -r /cmd_vel:=/diff_drive_controller/cmd_vel -p stamped:=true
+```
+
 ## Make propeller move in custom robot
 
 ```bash
