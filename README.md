@@ -31,4 +31,21 @@ ros2 run controller_manager spawner diff_drive_controller
 ros2 run rviz2 rviz2 -d /absolute/path/to/ws/src/my_robot_description/rviz/urdf_config.rviz
 
 ros2 run teleop_twist_keyboard  teleop_twist_keyboard --ros-args -r /cmd_vel:=/diff_drive_controller/cmd_vel -p stamped:=true
+
+```
+
+## Make propeller move in custom robot
+
+```bash
+ros2 run robot_state_publisher robot_state_publisher --ros-args -p robot_description:="$(xacro /absolute/path/to/ws/src/custom_robot_description/urdf/custom_robot.urdf.xacro)"
+
+ros2 run controller_manager ros2_control_node --ros-args --remap /controller_manager/robot_description:=/robot_description --params-file /absolute/path/to/ws/src/custom_robot_bringup/config/custom_robot_controllers.yaml
+
+ros2 run controller_manager spawner joint_state_broadcaster
+
+ros2 run controller_manager spawner velocity_controller
+
+ros2 run rviz2 rviz2 -d /absolute/path/to/ws/src/custom_robot_description/rviz/config2.rviz
+
+ros2 topic pub /velocity_controller/commands std_msgs/msg/Float64MultiArray "data: [1.0]"
 ```
