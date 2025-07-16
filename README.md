@@ -65,3 +65,36 @@ ros2 run rviz2 rviz2 -d /absolute/path/to/ws/src/custom_robot_description/rviz/c
 
 ros2 topic pub /velocity_controller/commands std_msgs/msg/Float64MultiArray "data: [1.0]"
 ```
+
+
+## Install pigpio
+
+Pigpio is not available in the default Ubuntu apt repository. One could install it from source, from here: https://abyz.me.uk/rpi/pigpio/download.html
+
+But to make pigpio more discoverable from ROS and whatnot, one can instead install it from the raspberry-pi repository, like this:
+
+```bash
+
+curl -fsSL https://archive.raspberrypi.org/debian/raspberrypi.gpg.key | \
+  gpg --dearmor | sudo tee /usr/share/keyrings/raspberrypi-archive-keyring.gpg > /dev/null
+
+echo "deb [signed-by=/usr/share/keyrings/raspberrypi-archive-keyring.gpg] http://archive.raspberrypi.org/debian bullseye main" | \
+  sudo tee /etc/apt/sources.list.d/raspi.list > /dev/null
+
+sudo apt update
+```
+
+Then:
+
+```bash
+sudo apt install pigpio libpigpio-dev
+```
+
+To start and stop the daemon:
+
+```bash
+sudo pigpiod
+sudo killall pigpiod
+```
+
+Maybe your user should also be in the gpio group? Dunno.
