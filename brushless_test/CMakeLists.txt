@@ -12,11 +12,14 @@ find_package(rclcpp REQUIRED)
 include_directories(include)
 
 add_executable(test_motors src/test_motors.cpp)
-ament_target_dependencies(test_motors rclcpp pigpio)
+ament_target_dependencies(test_motors rclcpp)
+
+target_include_directories(test_motors PRIVATE /usr/include)  # pigpio.h lives here
+target_link_libraries(test_motors pigpio pthread rt) # pthread and rt required by pigpio internally
 
 install(TARGETS
   test_motors
-  DESTINATION lib/$(PROJECT_NAME)/
+  DESTINATION lib/${PROJECT_NAME}/
 )
 
 ament_package()
