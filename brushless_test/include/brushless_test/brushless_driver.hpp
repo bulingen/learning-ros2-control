@@ -17,9 +17,9 @@ public:
         // : pi_(-1), input_voltage_(15.0), motor_max_voltage_(12.0), pwm_max_(255) {
         // motor_ctl_level_ = (motor_max_voltage_ / input_voltage_) * pwm_max_;
         pigpio_ = -1;
-        input_voltage_;
-        motor_max_voltage_;
-        pwm_max_;
+        input_voltage_ = 15.0;
+        motor_max_voltage_ = 12.0;
+        pwm_max_ = 255;
         motor_ctl_level_ = (motor_max_voltage_ / input_voltage_) * pwm_max_;
     }
 
