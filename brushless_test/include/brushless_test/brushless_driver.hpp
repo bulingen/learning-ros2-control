@@ -19,10 +19,17 @@ public:
         // : pi_(-1), input_voltage_(15.0), motor_max_voltage_(12.0), pwm_max_(255) {
         // motor_ctl_level_ = (motor_max_voltage_ / input_voltage_) * pwm_max_;
         pigpio_ = -1;
-        input_voltage_ = 15.0;
+
+        // this is the input voltage on alen
+        // input_voltage_ = 15.0;
+
+        // this is what I think is input on tvalen
+        input_voltage_ = 12.0;
+
         motor_max_voltage_ = 12.0;
         pwm_max_ = 255;
         motor_ctl_level_ = (motor_max_voltage_ / input_voltage_) * pwm_max_;
+        std::cout << "motor_ctl_level_" << motor_ctl_level_ << std::endl;
     }
 
     /**
@@ -68,7 +75,12 @@ public:
         if (signal > 1)
             signal = 1;
         gpio_write(pigpio_, DIR_PIN, FORWARD_LEVEL);
-        set_PWM_dutycycle(pigpio_, PWM_PIN, static_cast<int>(signal * motor_ctl_level_));
+        float dutycycle = signal * motor_ctl_level_;
+        std::cout << "dutycycle" << dutycycle << std::endl;
+        int dutycycleint = static_cast<int>(signal * motor_ctl_level_);
+        std::cout << "dutycycleint" << dutycycleint << std::endl;
+        set_PWM_dutycycle(pigpio_, PWM_PIN, dutycycleint);
+        // set_PWM_dutycycle(pigpio_, PWM_PIN, 255);
     }
 
     // Move backward with a value between 0 and 1
