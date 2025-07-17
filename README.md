@@ -98,3 +98,7 @@ sudo killall pigpiod
 ```
 
 Maybe your user should also be in the gpio group? Dunno.
+
+## TODO
+
+- Check here, for CI: https://github.com/botamochi6277/ros2_pigpio/blob/main/.github/workflows/main.yml

@@ -8,6 +8,9 @@ using namespace std::chrono_literals;
 int main()
 {
 
+    // TODO: probably need to do conversion of rad/s to speed of motor here
+    // knowing that the motor runs at 350 rpm
+
     auto driver = BrushlessDriver();
 
     auto result = driver.connect();
