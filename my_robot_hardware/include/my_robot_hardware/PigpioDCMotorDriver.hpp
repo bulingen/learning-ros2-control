@@ -1,20 +1,20 @@
-#ifndef BRUSHLESS_DRIVER_HPP
-#define BRUSHLESS_DRIVER_HPP
+#ifndef PIGPIO_DC_MOTOR_DRIVER_HPP
+#define PIGPIO_DC_MOTOR_DRIVER_HPP
 
 #include <pigpiod_if2.h>
 #include <iostream>
-#include "brushless_test/Result.hpp"
-#include "brushless_test/DriverError.hpp"
+#include "my_motor_hardware/Result.hpp"
+#include "my_motor_hardware/DriverError.hpp"
 
 #define PWM_PIN 12
 #define DIR_PIN 20
 #define FORWARD_LEVEL 0
 #define BACKWARD_LEVEL 1
 
-class BrushlessDriver
+class PigpioDCMotorDriver
 {
 public:
-    BrushlessDriver()
+    PigpioDCMotorDriver()
     {
         // : pi_(-1), input_voltage_(15.0), motor_max_voltage_(12.0), pwm_max_(255) {
         // motor_ctl_level_ = (motor_max_voltage_ / input_voltage_) * pwm_max_;
@@ -96,7 +96,7 @@ public:
         set_PWM_dutycycle(pigpio_, PWM_PIN, static_cast<int>(signal * motor_ctl_level_));
     }
 
-    // void BrushlessMotor::forward(double target_rad_per_sec) {
+    // void PigpioDCMotorDriver::forward(double target_rad_per_sec) {
     //     double clamped = std::clamp(target_rad_per_sec, -max_rads, max_rads);
     //     double pwm = (clamped / max_rads) * pwm_range;  // Map [-max_rads, max_rads] to [min_pwm, max_pwm]
     //     set_pwm(pwm);
@@ -124,7 +124,7 @@ public:
     }
 
     // Destructor
-    ~BrushlessDriver()
+    ~PigpioDCMotorDriver()
     {
         disconnect();
     }
