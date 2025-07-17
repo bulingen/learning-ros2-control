@@ -3,6 +3,8 @@
 
 #include <pigpiod_if2.h>
 #include <iostream>
+#include "brushless_test/Result.hpp"
+#include "brushless_test/DriverError.hpp"
 
 #define PWM_PIN 12
 #define DIR_PIN 20
@@ -28,20 +30,21 @@ public:
      *
      * @param host pigpiod daemon host. Defaults to localhost.
      * @param port pigpiod daemon port. Defaults to 8888.
-     * @return true if connection succeeded, false otherwise.
      */
-    bool connect(const char *host = "localhost", const char *port = "8888")
+    Result<bool, DriverError> connect(const char *host = "localhost", const char *port = "8888")
     {
         pigpio_ = pigpio_start(host, port);
 
         if (pigpio_ < 0)
         {
-            std::cerr << "Failed to connect to pigpio daemon" << std::endl;
-            return false;
+            // std::cerr << "Failed to connect to pigpio daemon" << std::endl;
+            // return false;
+            return Result<bool, DriverError>::Err(DriverError::PigpioUnavailable);
         }
         set_mode(pigpio_, DIR_PIN, PI_OUTPUT);
         set_mode(pigpio_, PWM_PIN, PI_OUTPUT);
-        return true;
+        // return true;
+        return Result<bool, DriverError>::Ok(true);
     }
 
     // Disconnect from the pigpio daemon
