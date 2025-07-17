@@ -9,4 +9,9 @@ endif()
 find_package(ament_cmake REQUIRED)
 find_package(rclcpp REQUIRED)
 
+# TODO: there is no test_motors executable here
+target_link_libraries(test_motors pigpiod_if2)
+
+include_directories(include)
+
 ament_package()
