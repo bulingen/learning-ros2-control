@@ -1,4 +1,5 @@
 #include "my_robot_hardware/mobile_base_hardware_interface.hpp"
+#include "brushless_test/DriverErrorToString.hpp"
 
 namespace mobile_base_hardware
 {
@@ -28,7 +29,7 @@ namespace mobile_base_hardware
         auto connect_result = driver_->connect();
         if (!connect_result.is_ok())
         {
-            std::cerr << to_string(result.error_code()) << std::endl;
+            std::cerr << to_string(connect_result.error_code()) << std::endl;
             return hardware_interface::CallbackReturn::ERROR;
         }
         std::cout << "Driver connected successfully." << std::endl;
