@@ -3,8 +3,8 @@
 
 #include <pigpiod_if2.h>
 #include <iostream>
-#include "my_motor_hardware/Result.hpp"
-#include "my_motor_hardware/DriverError.hpp"
+#include "my_robot_hardware/Result.hpp"
+#include "my_robot_hardware/DriverError.hpp"
 
 #define PWM_PIN 12
 #define DIR_PIN 20

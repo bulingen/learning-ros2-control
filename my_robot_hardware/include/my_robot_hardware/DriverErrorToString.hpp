@@ -1,5 +1,5 @@
 #pragma once
-#include "my_motor_hardware/DriverError.hpp"
+#include "my_robot_hardware/DriverError.hpp"
 #include <string>
 
 inline std::string to_string(DriverError err)
