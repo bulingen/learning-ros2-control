@@ -65,36 +65,58 @@ public:
         }
     }
 
-    // Move forward with a value between 0 and 1
-    void forward(float signal)
+    // Signal should be value between -1.0 and 1.0, where
+    // -1.0 is full speed backwards and 1.0 full speed forwards
+    void run_motor(double signal)
     {
         if (!is_connected())
             return;
-        if (signal < 0)
-            signal = 0;
-        if (signal > 1)
-            signal = 1;
-        gpio_write(pigpio_, DIR_PIN, FORWARD_LEVEL);
-        float dutycycle = signal * motor_ctl_level_;
-        std::cout << "dutycycle" << dutycycle << std::endl;
-        int dutycycleint = static_cast<int>(signal * motor_ctl_level_);
-        std::cout << "dutycycleint" << dutycycleint << std::endl;
+        
+        if (signal > 1.0)
+            signal = 1.0;
+        if (signal < -1.0)
+            signal = -1.0;
+
+        if (signal > 0.0)
+            gpio_write(pigpio_, DIR_PIN, FORWARD_LEVEL);
+        if (signal < 0.0)
+            gpio_write(pigpio_, DIR_PIN, BACKWARD_LEVEL);
+
+        // float dutycycle = signal * motor_ctl_level_;
+        int dutycycleint = static_cast<int>(abs(signal) * motor_ctl_level_);
         set_PWM_dutycycle(pigpio_, PWM_PIN, dutycycleint);
-        // set_PWM_dutycycle(pigpio_, PWM_PIN, 255);
     }
 
+    // Move forward with a value between 0 and 1
+    // void forward(float signal)
+    // {
+    //     if (!is_connected())
+    //         return;
+    //     if (signal < 0)
+    //         signal = 0;
+    //     if (signal > 1)
+    //         signal = 1;
+    //     gpio_write(pigpio_, DIR_PIN, FORWARD_LEVEL);
+    //     float dutycycle = signal * motor_ctl_level_;
+    //     std::cout << "dutycycle" << dutycycle << std::endl;
+    //     int dutycycleint = static_cast<int>(signal * motor_ctl_level_);
+    //     std::cout << "dutycycleint" << dutycycleint << std::endl;
+    //     set_PWM_dutycycle(pigpio_, PWM_PIN, dutycycleint);
+    //     // set_PWM_dutycycle(pigpio_, PWM_PIN, 255);
+    // }
+
     // Move backward with a value between 0 and 1
-    void backward(float signal)
-    {
-        if (!is_connected())
-            return;
-        if (signal < 0)
-            signal = 0;
-        if (signal > 1)
-            signal = 1;
-        gpio_write(pigpio_, DIR_PIN, BACKWARD_LEVEL);
-        set_PWM_dutycycle(pigpio_, PWM_PIN, static_cast<int>(signal * motor_ctl_level_));
-    }
+    // void backward(float signal)
+    // {
+    //     if (!is_connected())
+    //         return;
+    //     if (signal < 0)
+    //         signal = 0;
+    //     if (signal > 1)
+    //         signal = 1;
+    //     gpio_write(pigpio_, DIR_PIN, BACKWARD_LEVEL);
+    //     set_PWM_dutycycle(pigpio_, PWM_PIN, static_cast<int>(signal * motor_ctl_level_));
+    // }
 
     // void PigpioDCMotorDriver::forward(double target_rad_per_sec) {
     //     double clamped = std::clamp(target_rad_per_sec, -max_rads, max_rads);

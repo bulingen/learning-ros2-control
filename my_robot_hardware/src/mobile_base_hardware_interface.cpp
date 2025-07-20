@@ -148,11 +148,15 @@ namespace mobile_base_hardware
         double right_vel_cmd = get_command("base_right_wheel_joint/velocity");
         (void)right_vel_cmd; // voiding this to avoid warnings for being unused
 
-        if (left_vel_cmd > 0.0) {
-            driver_->forward(left_vel_cmd);
-        } else if (left_vel_cmd < 0.0) {
-            driver_->backward(left_vel_cmd);
-        }
+        // RCLCPP_INFO(get_logger(), "WRITE. get command. right = %.2f left = %.2f", left_vel_cmd, right_vel_cmd);
+
+        driver_->run_motor(left_vel_cmd);
+
+        // if (left_vel_cmd > 0.0) {
+        //     driver_->forward(left_vel_cmd);
+        // } else if (left_vel_cmd < 0.0) {
+        //     driver_->backward(left_vel_cmd);
+        // }
         
         // left_vel_ = left_vel_cmd;
 
