@@ -17,6 +17,12 @@ namespace mobile_base_hardware
 
         driver_ = std::make_shared<PigpioDCMotorDriver>();
 
+        left_vel_ = 0.0;
+        left_pos_ = 0.0;
+        right_vel_ = 0.0;
+        right_pos_ = 0.0;
+
+
         return hardware_interface::CallbackReturn::SUCCESS;
     }
     hardware_interface::CallbackReturn MobileBaseHardwareInterface::on_configure(const rclcpp_lifecycle::State &previous_state)
@@ -35,6 +41,7 @@ namespace mobile_base_hardware
         // Reason to keep it here: I don't know what corresponding "down" callback there is.
         // on_activate has corresponding on_deactivate, where we wanna disconnect.
         // But what is the corresponding callback for on_configure?
+        // TODO: the corresponding callback is on_cleanup. So use that.
         (void)previous_state;
         RCLCPP_INFO(get_logger(), "Activating... please wait...");
 
@@ -51,10 +58,10 @@ namespace mobile_base_hardware
         left_pos_ = 0.0;
         right_vel_ = 0.0;
         right_pos_ = 0.0;
-        set_state("base_left_wheel_joint/velocity", left_vel_);
-        set_state("base_right_wheel_joint/velocity", right_vel_);
-        set_state("base_left_wheel_joint/position", left_pos_);
-        set_state("base_right_wheel_joint/position", right_pos_);
+        set_state("base_left_wheel_joint/velocity", 0.0);
+        set_state("base_left_wheel_joint/position", 0.0);
+        set_state("base_right_wheel_joint/velocity", 0.0);
+        set_state("base_right_wheel_joint/position", 0.0);
 
         return hardware_interface::CallbackReturn::SUCCESS;
     }
@@ -116,10 +123,16 @@ namespace mobile_base_hardware
         double prev_left_pos = get_state("base_left_wheel_joint/position");
         double prev_right_pos = get_state("base_right_wheel_joint/position");
 
-        set_state("base_left_wheel_joint/velocity", left_vel_);
-        set_state("base_right_wheel_joint/velocity", right_vel_);
-        set_state("base_left_wheel_joint/position", prev_left_pos + left_vel_ * period.seconds());
-        set_state("base_right_wheel_joint/position", prev_right_pos + right_vel_ * period.seconds());
+        // NOTE: this is what made the thing work, although not that useful
+        // set_state("base_left_wheel_joint/velocity", left_vel_);
+        // set_state("base_right_wheel_joint/velocity", right_vel_);
+        // set_state("base_left_wheel_joint/position", prev_left_pos + left_vel_ * period.seconds());
+        // set_state("base_right_wheel_joint/position", prev_right_pos + right_vel_ * period.seconds());
+
+        set_state("base_left_wheel_joint/velocity", 0.0);
+        set_state("base_left_wheel_joint/position", 0.0);
+        set_state("base_right_wheel_joint/velocity", 0.0);
+        set_state("base_right_wheel_joint/position", 0.0);
 
         return hardware_interface::return_type::OK;
     }
