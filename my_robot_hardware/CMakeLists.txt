@@ -26,6 +26,8 @@ add_library(
 
 ament_target_dependencies(${PROJECT_NAME} rclcpp rclcpp_lifecycle hardware_interface pluginlib)
 
+# possibly MobileBaseHardwareInterface with snakecase instead?
+# or my_robot_hardware_interface?
 target_link_libraries(${PROJECT_NAME} pigpiod_if2)
 
 pluginlib_export_plugin_description_file(hardware_interface my_robot_hardware_interface.xml)
