@@ -1,10 +1,13 @@
 #include "my_robot_hardware/mobile_base_hardware_interface.hpp"
 #include "my_robot_hardware/DriverErrorToString.hpp"
+#include "rclcpp/rclcpp.hpp"
 
 namespace mobile_base_hardware
 {
     hardware_interface::CallbackReturn MobileBaseHardwareInterface::on_init(const hardware_interface::HardwareInfo &info)
     {
+        RCLCPP_INFO(get_logger(), "Initiating... please wait...");
+
         if (hardware_interface::SystemInterface::on_init(info) != hardware_interface::CallbackReturn::SUCCESS)
         {
             return hardware_interface::CallbackReturn::ERROR;
@@ -19,6 +22,7 @@ namespace mobile_base_hardware
     hardware_interface::CallbackReturn MobileBaseHardwareInterface::on_configure(const rclcpp_lifecycle::State &previous_state)
     {
         (void)previous_state;
+        RCLCPP_INFO(get_logger(), "Configuring... please wait...");
         return hardware_interface::CallbackReturn::SUCCESS;
     }
 
@@ -32,6 +36,7 @@ namespace mobile_base_hardware
         // on_activate has corresponding on_deactivate, where we wanna disconnect.
         // But what is the corresponding callback for on_configure?
         (void)previous_state;
+        RCLCPP_INFO(get_logger(), "Activating... please wait...");
 
         auto connect_result = driver_->connect();
         if (!connect_result.is_ok())
@@ -57,6 +62,7 @@ namespace mobile_base_hardware
     hardware_interface::CallbackReturn MobileBaseHardwareInterface::on_deactivate(const rclcpp_lifecycle::State &previous_state)
     {
         (void)previous_state;
+        RCLCPP_INFO(get_logger(), "Deactivating... please wait...");
         driver_->disconnect();
         return hardware_interface::CallbackReturn::SUCCESS;
     }
