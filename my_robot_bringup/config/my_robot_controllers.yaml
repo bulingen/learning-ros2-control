@@ -1,6 +1,9 @@
 controller_manager:
   ros__parameters:
-    update_rate: 50
+    # A rate of 1 is good for debugging with prints
+    # update_rate: 1
+    update_rate: 10
+    
 
     joint_state_broadcaster:
       type: joint_state_broadcaster/JointStateBroadcaster
@@ -23,7 +26,10 @@ diff_drive_controller:
     twist_covariance_diagonal: [0.001, 0.001, 0.001, 0.001, 0.001, 0.01]
 
     enable_odom_tf: true
-    publish_rate: 50.0
+
+    # A rate of 1 is good for debugging with prints
+    # publish_rate: 1.0
+    publish_rate: 20.0
 
     # NOTE: has velocity limits, specific to humble (not in jazzy)
     linear.x.has_velocity_limits: true
