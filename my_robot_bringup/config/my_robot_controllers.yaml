@@ -2,7 +2,7 @@ controller_manager:
   ros__parameters:
     # A rate of 1 is good for debugging with prints
     # update_rate: 1
-    update_rate: 10
+    update_rate: 30
     
 
     joint_state_broadcaster:
@@ -29,7 +29,7 @@ diff_drive_controller:
 
     # A rate of 1 is good for debugging with prints
     # publish_rate: 1.0
-    publish_rate: 20.0
+    publish_rate: 30.0
 
     # NOTE: has velocity limits, specific to humble (not in jazzy)
     linear.x.has_velocity_limits: true
