@@ -56,18 +56,18 @@ namespace mobile_base_hardware
         // std::vector<double> hw_velocities_;
 
         // States
-        double left_vel_;
-        double right_vel_;
+        double left_vel_ = 0.0;
+        double right_vel_ = 0.0;
 
-        double left_pos_;
-        double right_pos_;
+        double left_pos_ = 0.0;
+        double right_pos_ = 0.0;
 
         // std::shared_ptr<rclcpp::Logger> logger_;
         // rclcpp::Clock::SharedPtr clock_;
 
         // Commands
-        // double left_vel_cmd_;
-        // double right_vel_cmd_;
+        double left_vel_cmd_ = 0.0;
+        double right_vel_cmd_ = 0.0;
 
         // double left_pos_cmd_;
         // double right_pos_cmd_;

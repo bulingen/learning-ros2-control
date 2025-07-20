@@ -2,6 +2,8 @@
 #include "my_robot_hardware/DriverErrorToString.hpp"
 #include "rclcpp/rclcpp.hpp"
 
+
+
 namespace mobile_base_hardware
 {
     hardware_interface::CallbackReturn MobileBaseHardwareInterface::on_init(const hardware_interface::HardwareInfo &info)
@@ -17,10 +19,10 @@ namespace mobile_base_hardware
 
         driver_ = std::make_shared<PigpioDCMotorDriver>();
 
-        left_vel_ = 0.0;
-        left_pos_ = 0.0;
-        right_vel_ = 0.0;
-        right_pos_ = 0.0;
+        // left_vel_ = 0.0;
+        // left_pos_ = 0.0;
+        // right_vel_ = 0.0;
+        // right_pos_ = 0.0;
 
 
         return hardware_interface::CallbackReturn::SUCCESS;
@@ -58,10 +60,10 @@ namespace mobile_base_hardware
         left_pos_ = 0.0;
         right_vel_ = 0.0;
         right_pos_ = 0.0;
-        set_state("base_left_wheel_joint/velocity", 0.0);
-        set_state("base_left_wheel_joint/position", 0.0);
-        set_state("base_right_wheel_joint/velocity", 0.0);
-        set_state("base_right_wheel_joint/position", 0.0);
+        set_state("base_left_wheel_joint/velocity", left_vel_);
+        set_state("base_left_wheel_joint/position", left_pos_);
+        set_state("base_right_wheel_joint/velocity", right_vel_);
+        set_state("base_right_wheel_joint/position", right_pos_);
 
         return hardware_interface::CallbackReturn::SUCCESS;
     }
@@ -129,10 +131,10 @@ namespace mobile_base_hardware
         // set_state("base_left_wheel_joint/position", prev_left_pos + left_vel_ * period.seconds());
         // set_state("base_right_wheel_joint/position", prev_right_pos + right_vel_ * period.seconds());
 
-        set_state("base_left_wheel_joint/velocity", 0.0);
-        set_state("base_left_wheel_joint/position", 0.0);
-        set_state("base_right_wheel_joint/velocity", 0.0);
-        set_state("base_right_wheel_joint/position", 0.0);
+        set_state("base_left_wheel_joint/velocity", left_vel_);
+        set_state("base_left_wheel_joint/position", prev_left_pos + left_vel_ * period.seconds());
+        set_state("base_right_wheel_joint/velocity", right_vel_);
+        set_state("base_right_wheel_joint/position", prev_right_pos + right_vel_ + period.seconds());
 
         return hardware_interface::return_type::OK;
     }
@@ -144,6 +146,7 @@ namespace mobile_base_hardware
         (void)period;
         double left_vel_cmd = get_command("base_left_wheel_joint/velocity");
         double right_vel_cmd = get_command("base_right_wheel_joint/velocity");
+        (void)right_vel_cmd; // voiding this to avoid warnings for being unused
 
         if (left_vel_cmd > 0.0) {
             driver_->forward(left_vel_cmd);
@@ -151,9 +154,9 @@ namespace mobile_base_hardware
             driver_->backward(left_vel_cmd);
         }
         
-        left_vel_ = left_vel_cmd;
+        // left_vel_ = left_vel_cmd;
 
-        right_vel_ = right_vel_cmd;
+        // right_vel_ = right_vel_cmd;
 
         // TODO: need to handle right wheel somehow
         // TODO: also need to translate rad/s to speed ratio
