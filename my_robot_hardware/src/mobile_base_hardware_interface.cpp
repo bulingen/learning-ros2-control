@@ -2,6 +2,7 @@
 #include "my_robot_hardware/DriverErrorToString.hpp"
 #include "rclcpp/rclcpp.hpp"
 
+#define PI 3.14159265359
 
 
 namespace mobile_base_hardware
@@ -122,19 +123,31 @@ namespace mobile_base_hardware
 
         // double prev_left_vel = get_state("base_left_wheel_joint/velocity");
         // double prev_right_vel = get_state("base_right_wheel_joint/velocity");
-        double prev_left_pos = get_state("base_left_wheel_joint/position");
-        double prev_right_pos = get_state("base_right_wheel_joint/position");
-
+        // double prev_left_pos = get_state("base_left_wheel_joint/position");
+        // double prev_right_pos = get_state("base_right_wheel_joint/position");
         // NOTE: this is what made the thing work, although not that useful
         // set_state("base_left_wheel_joint/velocity", left_vel_);
         // set_state("base_right_wheel_joint/velocity", right_vel_);
         // set_state("base_left_wheel_joint/position", prev_left_pos + left_vel_ * period.seconds());
         // set_state("base_right_wheel_joint/position", prev_right_pos + right_vel_ * period.seconds());
 
+
+        left_vel_ = left_vel_cmd_;
+        right_vel_ = right_vel_cmd_;
+        left_pos_ += left_vel_ * period.seconds();
+        right_pos_ += right_vel_ * period.seconds();
+
+        left_vel_ = std::isnan(left_vel_) ? 0.0 : left_vel_;
+        right_vel_ = std::isnan(right_vel_) ? 0.0 : right_vel_;
+        
+        left_pos_ = std::isnan(left_pos_) ? 0.0 : left_pos_;
+        right_pos_ = std::isnan(right_pos_) ? 0.0 : right_pos_;
+
+
         set_state("base_left_wheel_joint/velocity", left_vel_);
-        set_state("base_left_wheel_joint/position", prev_left_pos + left_vel_ * period.seconds());
+        set_state("base_left_wheel_joint/position", left_pos_);
         set_state("base_right_wheel_joint/velocity", right_vel_);
-        set_state("base_right_wheel_joint/position", prev_right_pos + right_vel_ + period.seconds());
+        set_state("base_right_wheel_joint/position", right_pos_);
 
         return hardware_interface::return_type::OK;
     }
@@ -144,13 +157,41 @@ namespace mobile_base_hardware
     {
         (void)time;
         (void)period;
+
         double left_vel_cmd = get_command("base_left_wheel_joint/velocity");
         double right_vel_cmd = get_command("base_right_wheel_joint/velocity");
-        (void)right_vel_cmd; // voiding this to avoid warnings for being unused
+        // (void)right_vel_cmd; // voiding this to avoid warnings for being unused
+
+        left_vel_cmd_ = left_vel_cmd;
+        right_vel_cmd_ = right_vel_cmd;
+
+        // NOTE:
+        // The command is coming in at rad/s. The diff controller has already calculated what it should be, based on
+        // what the /cmd_vel topic gets (from teleopkeyboard for example). So if keyboard says "0.5 m/s",
+        // then diff controller maybe sees that wheel radius is 0.1 m. The resulting rotational speed of the wheel
+        // is then 5.0 rad/s.
+
+        // What we need to do then, is to convert that to how fast the dc motor should spin.
+        // It should spin 5 rad/s which is 5/2PI = 0.796 rotations per second
+        // Our motor's max speed is 350 RPM.
+        double max_rpm = 350.0;
+        double max_revolutions_per_second = max_rpm / 60.0;
+        double rad_per_revolution = 2 * PI;
+        double max_rad_per_sec = max_revolutions_per_second * rad_per_revolution;
+
+
+        // this is mocked command we get
+        // float one_lap = 2 * PI;
+        // float cmd_vel_rad_per_sec = 10 * one_lap;
+
+        // handle command
+        // the command is capped in the driver anyway
+        double requested_ratio_for_left_motor = left_vel_cmd / max_rad_per_sec;
+
 
         // RCLCPP_INFO(get_logger(), "WRITE. get command. right = %.2f left = %.2f", left_vel_cmd, right_vel_cmd);
 
-        driver_->run_motor(left_vel_cmd);
+        driver_->run_motor(requested_ratio_for_left_motor);
 
         // if (left_vel_cmd > 0.0) {
         //     driver_->forward(left_vel_cmd);
