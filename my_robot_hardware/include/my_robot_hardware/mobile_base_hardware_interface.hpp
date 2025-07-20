@@ -35,9 +35,9 @@ namespace mobile_base_hardware
         write(const rclcpp::Time &time, const rclcpp::Duration &period) override;
 
         // Export interfaces
-        std::vector<hardware_interface::StateInterface> export_state_interfaces() override;
+        // std::vector<hardware_interface::StateInterface> export_state_interfaces() override;
 
-        std::vector<hardware_interface::CommandInterface> export_command_interfaces() override;
+        // std::vector<hardware_interface::CommandInterface> export_command_interfaces() override;
 
     private:
         std::shared_ptr<PigpioDCMotorDriver> driver_;
@@ -62,15 +62,15 @@ namespace mobile_base_hardware
         double left_pos_;
         double right_pos_;
 
-        std::shared_ptr<rclcpp::Logger> logger_;
-        rclcpp::Clock::SharedPtr clock_;
+        // std::shared_ptr<rclcpp::Logger> logger_;
+        // rclcpp::Clock::SharedPtr clock_;
 
         // Commands
-        double left_vel_cmd_;
-        double right_vel_cmd_;
+        // double left_vel_cmd_;
+        // double right_vel_cmd_;
 
-        double left_pos_cmd_;
-        double right_pos_cmd_;
+        // double left_pos_cmd_;
+        // double right_pos_cmd_;
 
     }; // class MobileBaseHardwareInterface
 

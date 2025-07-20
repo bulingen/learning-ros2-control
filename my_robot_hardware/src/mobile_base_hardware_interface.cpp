@@ -24,6 +24,13 @@ namespace mobile_base_hardware
 
     hardware_interface::CallbackReturn MobileBaseHardwareInterface::on_activate(const rclcpp_lifecycle::State &previous_state)
     {
+
+        // TODO: maybe use actuator interface instead, since there is no feedback?
+
+        // TODO: possibly move the connect to on_configure?
+        // Reason to keep it here: I don't know what corresponding "down" callback there is.
+        // on_activate has corresponding on_deactivate, where we wanna disconnect.
+        // But what is the corresponding callback for on_configure?
         (void)previous_state;
 
         auto connect_result = driver_->connect();
@@ -35,10 +42,14 @@ namespace mobile_base_hardware
         std::cout << "Driver connected successfully." << std::endl;
 
         // Set states initially
-        set_state("base_left_wheel_joint/velocity", 0.0);
-        set_state("base_right_wheel_joint/velocity", 0.0);
-        set_state("base_left_wheel_joint/position", 0.0);
-        set_state("base_right_wheel_joint/position", 0.0);
+        left_vel_ = 0.0;
+        left_pos_ = 0.0;
+        right_vel_ = 0.0;
+        right_pos_ = 0.0;
+        set_state("base_left_wheel_joint/velocity", left_vel_);
+        set_state("base_right_wheel_joint/velocity", right_vel_);
+        set_state("base_left_wheel_joint/position", left_pos_);
+        set_state("base_right_wheel_joint/position", right_pos_);
 
         return hardware_interface::CallbackReturn::SUCCESS;
     }
@@ -91,10 +102,18 @@ namespace mobile_base_hardware
 
         // base_right_wheel_joint
         // base_left_wheel_joint
-        set_state("base_left_wheel_joint/velocity", left_vel);
-        set_state("base_right_wheel_joint/velocity", right_vel);
-        set_state("base_left_wheel_joint/position", get_state("base_left_wheel_joint/position") + left_vel * period.seconds());
-        set_state("base_right_wheel_joint/position", get_state("base_right_wheel_joint/position") + right_vel * period.seconds());
+        // set_state("base_left_wheel_joint/velocity", left_vel_);
+        // set_state("base_right_wheel_joint/velocity", right_vel_);
+
+        // double prev_left_vel = get_state("base_left_wheel_joint/velocity");
+        // double prev_right_vel = get_state("base_right_wheel_joint/velocity");
+        double prev_left_pos = get_state("base_left_wheel_joint/position");
+        double prev_right_pos = get_state("base_right_wheel_joint/position");
+
+        set_state("base_left_wheel_joint/velocity", left_vel_);
+        set_state("base_right_wheel_joint/velocity", right_vel_);
+        set_state("base_left_wheel_joint/position", prev_left_pos + left_vel_ * period.seconds());
+        set_state("base_right_wheel_joint/position", prev_right_pos + right_vel_ * period.seconds());
 
         return hardware_interface::return_type::OK;
     }
@@ -104,7 +123,18 @@ namespace mobile_base_hardware
     {
         (void)time;
         (void)period;
-        driver_->forward(get_command("base_left_wheel_joint/velocity"));
+        double left_vel_cmd = get_command("base_left_wheel_joint/velocity");
+        double right_vel_cmd = get_command("base_right_wheel_joint/velocity");
+
+        if (left_vel_cmd > 0.0) {
+            driver_->forward(left_vel_cmd);
+        } else if (left_vel_cmd < 0.0) {
+            driver_->backward(left_vel_cmd);
+        }
+        
+        left_vel_ = left_vel_cmd;
+
+        right_vel_ = right_vel_cmd;
 
         // TODO: need to handle right wheel somehow
         // TODO: also need to translate rad/s to speed ratio
