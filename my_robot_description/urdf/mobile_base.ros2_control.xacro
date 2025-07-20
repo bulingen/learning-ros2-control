@@ -2,7 +2,7 @@
 
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro">
 
-    <ros2_control name="MobileBaseHardwareInterface" type="system">
+    <ros2_control name="MobileBase" type="system">
         <hardware>
             <!-- <plugin>mock_components/GenericSystem</plugin>
             <param name="calculate_dynamics">true</param> -->
