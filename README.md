@@ -68,6 +68,12 @@ ros2 run rviz2 rviz2 -d /absolute/path/to/ws/src/custom_robot_description/rviz/c
 ros2 topic pub /velocity_controller/commands std_msgs/msg/Float64MultiArray "data: [1.0]"
 ```
 
+You can also use `teleop_twist_keyboard` like this:
+
+```bash
+ros2 run custom_robot_teleop cmd_vel_to_single_array
+ros2 run teleop_twist_keyboard teleop_twist_keyboard --ros-args -p rate:=20
+```
 
 ## Install pigpio
 
