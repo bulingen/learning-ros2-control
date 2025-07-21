@@ -30,9 +30,11 @@ ros2 run controller_manager spawner diff_drive_controller
 
 ros2 run rviz2 rviz2 -d /absolute/path/to/ws/src/my_robot_description/rviz/urdf_config.rviz
 
-ros2 run teleop_twist_keyboard  teleop_twist_keyboard --ros-args -r /cmd_vel:=/diff_drive_controller/cmd_vel -p stamped:=true
+ros2 run teleop_twist_keyboard  teleop_twist_keyboard --ros-args -r /cmd_vel:=/diff_drive_controller/cmd_vel -p stamped:=true -p rate:=20
 
 ```
+
+Notice the `-p rate:=20` param. Sometimes messages are dropped, or I get "jumpy" motor behaviour. With a rate of 20, those problems go away.
 
 ## Run with launch files
 

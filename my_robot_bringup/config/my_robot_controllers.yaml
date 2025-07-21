@@ -40,3 +40,10 @@ diff_drive_controller:
     angular.z.has_velocity_limits: true
     angular.z.max_velocity: 1.0
     angular.z.min_velocity: -1.0
+
+    # All of a sudden, I was getting warnings about messages being dropped
+    # because of being too old. This is possibly because of system clocks
+    # out of sync, and if that's the case, then it should perhaps be fixed
+    # properly. But otherwise, one can override the default of 0.5.
+    # Another fix is to use `-p rate:=20` when running teleop keyboard.
+    cmd_vel_timeout: 0.5
