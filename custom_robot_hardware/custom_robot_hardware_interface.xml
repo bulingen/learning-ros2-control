@@ -1,0 +1,11 @@
+<library path="custom_robot_hardware">
+    <class
+        name="propeller_hardware/PropellerHardwareInterface"
+        type="propeller_hardware::PropellerHardwareInterface"
+        base_class_type="hardware_interface::SystemInterface"
+    >
+        <description>
+            Hardware interface for a propeller with a pigpio dc motor.
+        </description>
+    </class>
+</library>

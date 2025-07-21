@@ -1,0 +1,84 @@
+#ifndef PROPELLER_HARDWARE_INTERFACE_HPP
+#define PROPELLER_HARDWARE_INTERFACE_HPP
+
+#include <string>
+
+#include "rclcpp/clock.hpp"
+#include "rclcpp/duration.hpp"
+#include "rclcpp/logger.hpp"
+
+#include "hardware_interface/system_interface.hpp"
+#include "custom_robot_hardware/PigpioDCMotorDriver.hpp"
+
+namespace propeller_hardware
+{
+
+    class PropellerHardwareInterface : public hardware_interface::SystemInterface
+    {
+    public:
+        // Lifecycle node override
+        hardware_interface::CallbackReturn
+        on_configure(const rclcpp_lifecycle::State &previous_state) override;
+
+        hardware_interface::CallbackReturn
+        on_activate(const rclcpp_lifecycle::State &previous_state) override;
+
+        hardware_interface::CallbackReturn
+        on_deactivate(const rclcpp_lifecycle::State &previous_state) override;
+
+        // SystemInterface override
+        hardware_interface::CallbackReturn
+        on_init(const hardware_interface::HardwareInfo &info) override;
+
+        hardware_interface::return_type
+        read(const rclcpp::Time &time, const rclcpp::Duration &period) override;
+
+        hardware_interface::return_type
+        write(const rclcpp::Time &time, const rclcpp::Duration &period) override;
+
+        // Export interfaces
+        // std::vector<hardware_interface::StateInterface> export_state_interfaces() override;
+
+        // std::vector<hardware_interface::CommandInterface> export_command_interfaces() override;
+
+    private:
+        std::shared_ptr<PigpioDCMotorDriver> driver_;
+
+        // // Parameters for the DiffBot simulation
+        // double hw_start_sec_;
+        // double hw_stop_sec_;
+
+        // // Objects for logging
+        // std::shared_ptr<rclcpp::Logger> logger_;
+        // rclcpp::Clock::SharedPtr clock_;
+
+        // // Store the command for the simulated robot
+        // std::vector<double> hw_commands_;
+        // std::vector<double> hw_positions_;
+        // std::vector<double> hw_velocities_;
+
+        std::string pigpiod_host_ = "localhost";
+        std::string pigpiod_port_ = "8888";
+
+        // States
+        double left_vel_ = 0.0;
+        double right_vel_ = 0.0;
+
+        double left_pos_ = 0.0;
+        double right_pos_ = 0.0;
+
+        // std::shared_ptr<rclcpp::Logger> logger_;
+        // rclcpp::Clock::SharedPtr clock_;
+
+        // Commands
+        double left_vel_cmd_ = 0.0;
+        double right_vel_cmd_ = 0.0;
+
+        // double left_pos_cmd_;
+        // double right_pos_cmd_;
+
+    }; // class PropellerHardwareInterface
+
+} // namespace propeller_hardware
+
+#endif
