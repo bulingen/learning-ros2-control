@@ -38,9 +38,9 @@ public:
      * @param host pigpiod daemon host. Defaults to localhost.
      * @param port pigpiod daemon port. Defaults to 8888.
      */
-    Result<bool, DriverError> connect(const char *host = "localhost", const char *port = "8888")
+    Result<bool, DriverError> connect(const std::string& host = "localhost", const std::string& port = "localhost")
     {
-        pigpio_ = pigpio_start(host, port);
+        pigpio_ = pigpio_start(host.c_str(), port.c_str());
 
         if (pigpio_ < 0)
         {

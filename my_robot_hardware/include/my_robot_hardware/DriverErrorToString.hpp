@@ -9,7 +9,7 @@ inline std::string to_string(DriverError err)
     case DriverError::None:
         return "No error";
     case DriverError::PigpioUnavailable:
-        return "Failed to connect to pigpio daemon. Is it running?";
+        return "Pigpio unavailable";
     case DriverError::Unknown:
         return "Unknown error";
     default:

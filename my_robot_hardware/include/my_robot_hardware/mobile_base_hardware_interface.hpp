@@ -1,6 +1,8 @@
 #ifndef MOBILE_BASE_HARDWARE_INTERFACE_HPP
 #define MOBILE_BASE_HARDWARE_INTERFACE_HPP
 
+#include <string>
+
 #include "rclcpp/clock.hpp"
 #include "rclcpp/duration.hpp"
 #include "rclcpp/logger.hpp"
@@ -54,6 +56,9 @@ namespace mobile_base_hardware
         // std::vector<double> hw_commands_;
         // std::vector<double> hw_positions_;
         // std::vector<double> hw_velocities_;
+
+        std::string pigpiod_host_ = "localhost";
+        std::string pigpiod_port_ = "8888";
 
         // States
         double left_vel_ = 0.0;

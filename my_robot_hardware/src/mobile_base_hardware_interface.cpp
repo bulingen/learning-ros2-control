@@ -18,6 +18,9 @@ namespace mobile_base_hardware
 
         info_ = info;
 
+        pigpiod_host_ = info_.hardware_parameters["pigpiod_host"];
+        pigpiod_port_ = info_.hardware_parameters["pigpiod_port"];
+
         driver_ = std::make_shared<PigpioDCMotorDriver>();
 
         // left_vel_ = 0.0;
@@ -48,10 +51,13 @@ namespace mobile_base_hardware
         (void)previous_state;
         RCLCPP_INFO(get_logger(), "Activating... please wait...");
 
-        auto connect_result = driver_->connect();
+        auto connect_result = driver_->connect(pigpiod_host_, pigpiod_port_);
         if (!connect_result.is_ok())
         {
-            std::cerr << to_string(connect_result.error_code()) << std::endl;
+            std::string error_message = to_string(connect_result.error_code());
+            RCLCPP_ERROR(get_logger(), "Connection failed to %s:%s: %s",
+               pigpiod_host_.c_str(), pigpiod_port_.c_str(),
+               error_message.c_str());
             return hardware_interface::CallbackReturn::ERROR;
         }
         std::cout << "Driver connected successfully." << std::endl;
