@@ -191,7 +191,11 @@ namespace mobile_base_hardware
 
         // RCLCPP_INFO(get_logger(), "WRITE. get command. right = %.2f left = %.2f", left_vel_cmd, right_vel_cmd);
 
+        // NOTE: we're only controlling one motor here, since I only have one.
+        // If we had a right wheel motor, we might've had to multiply that by -1
+        // since the orientation of the motors are mirrored. Just a note for the "future".
         driver_->run_motor(requested_ratio_for_left_motor);
+
 
         // if (left_vel_cmd > 0.0) {
         //     driver_->forward(left_vel_cmd);
