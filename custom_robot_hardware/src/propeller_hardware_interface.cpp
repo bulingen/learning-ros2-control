@@ -23,12 +23,6 @@ namespace propeller_hardware
 
         driver_ = std::make_shared<PigpioDCMotorDriver>();
 
-        // left_vel_ = 0.0;
-        // left_pos_ = 0.0;
-        // right_vel_ = 0.0;
-        // right_pos_ = 0.0;
-
-
         return hardware_interface::CallbackReturn::SUCCESS;
     }
     hardware_interface::CallbackReturn PropellerHardwareInterface::on_configure(const rclcpp_lifecycle::State &previous_state)
@@ -63,14 +57,10 @@ namespace propeller_hardware
         std::cout << "Driver connected successfully." << std::endl;
 
         // Set states initially
-        left_vel_ = 0.0;
-        left_pos_ = 0.0;
-        right_vel_ = 0.0;
-        right_pos_ = 0.0;
-        set_state("base_left_wheel_joint/velocity", left_vel_);
-        set_state("base_left_wheel_joint/position", left_pos_);
-        set_state("base_right_wheel_joint/velocity", right_vel_);
-        set_state("base_right_wheel_joint/position", right_pos_);
+        vel_ = 0.0;
+        pos_ = 0.0;
+        set_state("propeller_joint/velocity", vel_);
+        set_state("propeller_joint/position", pos_);
 
         return hardware_interface::CallbackReturn::SUCCESS;
     }
@@ -83,77 +73,20 @@ namespace propeller_hardware
         return hardware_interface::CallbackReturn::SUCCESS;
     }
 
-    //     hardware_interface::return_type DiffBotSystemHardware::read(
-    //   const rclcpp::Time & /*time*/, const rclcpp::Duration & period)
-    // {
-    //   // BEGIN: This part here is for exemplary purposes - Please do not copy to your production code
-    //   std::stringstream ss;
-    //   ss << "Reading states:";
-    //   for (std::size_t i = 0; i < hw_velocities_.size(); i++)
-    //   {
-    //     // Simulate DiffBot wheels's movement as a first-order system
-    //     // Update the joint status: this is a revolute joint without any limit.
-    //     // Simply integrates
-    //     hw_positions_[i] = hw_positions_[i] + period.seconds() * hw_velocities_[i];
-
-    //     ss << std::fixed << std::setprecision(2) << std::endl
-    //        << "\t"
-    //           "position "
-    //        << hw_positions_[i] << " and velocity " << hw_velocities_[i] << " for '"
-    //        << info_.joints[i].name.c_str() << "'!";
-    //   }
-    //   RCLCPP_INFO_THROTTLE(get_logger(), *get_clock(), 500, "%s", ss.str().c_str());
-    //   // END: This part here is for exemplary purposes - Please do not copy to your production code
-
-    //   return hardware_interface::return_type::OK;
-    // }
-
     hardware_interface::return_type
     PropellerHardwareInterface::read(const rclcpp::Time &time, const rclcpp::Duration &period)
     {
         (void)time;
 
-        // TODO: need to store this in driver
-        // double left_vel = 0.0;
-        // double right_vel = 0.0;
-        // double left_pos = 0.0;
-        // double right_pos = 0.0;
+        vel_ = cmd_;
+        pos_ += vel_ * period.seconds();
 
-        // hw_positions_[i] = hw_positions_[i] + period.seconds() * hw_velocities_[i];
-        // left_pos_ =
-
-        // base_right_wheel_joint
-        // base_left_wheel_joint
-        // set_state("base_left_wheel_joint/velocity", left_vel_);
-        // set_state("base_right_wheel_joint/velocity", right_vel_);
-
-        // double prev_left_vel = get_state("base_left_wheel_joint/velocity");
-        // double prev_right_vel = get_state("base_right_wheel_joint/velocity");
-        // double prev_left_pos = get_state("base_left_wheel_joint/position");
-        // double prev_right_pos = get_state("base_right_wheel_joint/position");
-        // NOTE: this is what made the thing work, although not that useful
-        // set_state("base_left_wheel_joint/velocity", left_vel_);
-        // set_state("base_right_wheel_joint/velocity", right_vel_);
-        // set_state("base_left_wheel_joint/position", prev_left_pos + left_vel_ * period.seconds());
-        // set_state("base_right_wheel_joint/position", prev_right_pos + right_vel_ * period.seconds());
-
-
-        left_vel_ = left_vel_cmd_;
-        right_vel_ = right_vel_cmd_;
-        left_pos_ += left_vel_ * period.seconds();
-        right_pos_ += right_vel_ * period.seconds();
-
-        left_vel_ = std::isnan(left_vel_) ? 0.0 : left_vel_;
-        right_vel_ = std::isnan(right_vel_) ? 0.0 : right_vel_;
+        vel_ = std::isnan(vel_) ? 0.0 : vel_;
         
-        left_pos_ = std::isnan(left_pos_) ? 0.0 : left_pos_;
-        right_pos_ = std::isnan(right_pos_) ? 0.0 : right_pos_;
+        pos_ = std::isnan(pos_) ? 0.0 : pos_;
 
-
-        set_state("base_left_wheel_joint/velocity", left_vel_);
-        set_state("base_left_wheel_joint/position", left_pos_);
-        set_state("base_right_wheel_joint/velocity", right_vel_);
-        set_state("base_right_wheel_joint/position", right_pos_);
+        set_state("propeller_joint/velocity", vel_);
+        set_state("propeller_joint/position", pos_);
 
         return hardware_interface::return_type::OK;
     }
@@ -164,12 +97,11 @@ namespace propeller_hardware
         (void)time;
         (void)period;
 
-        double left_vel_cmd = get_command("base_left_wheel_joint/velocity");
-        double right_vel_cmd = get_command("base_right_wheel_joint/velocity");
-        // (void)right_vel_cmd; // voiding this to avoid warnings for being unused
+        double vel_cmd = get_command("propeller_joint/velocity");
 
-        left_vel_cmd_ = left_vel_cmd;
-        right_vel_cmd_ = right_vel_cmd;
+        // RCLCPP_INFO(get_logger(), "COMMAND: %f", vel_cmd);
+
+        cmd_ = vel_cmd;
 
         // NOTE:
         // The command is coming in at rad/s. The diff controller has already calculated what it should be, based on
@@ -192,7 +124,7 @@ namespace propeller_hardware
 
         // handle command
         // the command is capped in the driver anyway
-        double requested_ratio_for_left_motor = left_vel_cmd / max_rad_per_sec;
+        double requested_ratio_for_left_motor = vel_cmd / max_rad_per_sec;
 
 
         // RCLCPP_INFO(get_logger(), "WRITE. get command. right = %.2f left = %.2f", left_vel_cmd, right_vel_cmd);
@@ -200,6 +132,9 @@ namespace propeller_hardware
         // NOTE: we're only controlling one motor here, since I only have one.
         // If we had a right wheel motor, we might've had to multiply that by -1
         // since the orientation of the motors are mirrored. Just a note for the "future".
+
+        // RCLCPP_INFO(get_logger(), "RUN MOTOR: %f", requested_ratio_for_left_motor);
+
         driver_->run_motor(requested_ratio_for_left_motor);
 
 
