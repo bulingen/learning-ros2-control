@@ -19,7 +19,8 @@ setup(
     license='TODO: License declaration',
     tests_require=['pytest'],
     entry_points={
-        'console_scripts': [
+        "console_scripts": [
+            "cmd_vel_to_single_array = custom_robot_teleop.cmd_vel_to_single_array:main",
         ],
     },
 )
