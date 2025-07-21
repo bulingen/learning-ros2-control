@@ -107,6 +107,37 @@ sudo killall pigpiod
 
 Maybe your user should also be in the gpio group? Dunno.
 
+## VS Code tips
+
+Run this:
+
+```bash
+colcon build --cmake-args -DCMAKE_EXPORT_COMPILE_COMMANDS=ON
+```
+
+And then add to your `c_cpp_properties.json`:
+
+```diff
+{
+    "configurations": [
+        {
+            "browse": {
+                "limitSymbolsToIncludedHeaders": true,
+                "path": [
+                    "${workspaceFolder}/**"
+                ]
+            },
+            "name": "ros2",
+            "intelliSenseMode": "gcc-x64",
+            "cStandard": "gnu11",
+            "cppStandard": "c++17",
++            "compileCommands": "${workspaceFolder}/build/compile_commands.json"
+        }
+    ],
+    "version": 4
+}
+```
+
 ## TODO
 
 - Check here, for CI: https://github.com/botamochi6277/ros2_pigpio/blob/main/.github/workflows/main.yml
