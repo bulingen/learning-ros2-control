@@ -22,8 +22,9 @@
 
     <node pkg="controller_manager" exec="spawner" args="joint_state_broadcaster" />
     <node pkg="controller_manager" exec="spawner" args="diff_drive_controller" />
+    <node pkg="controller_manager" exec="spawner" args="arm_controller" />
 
     <!-- NOTE: commenting out rviz here, since I run it on rpi. Will run rviz on PC instead -->
-    <!-- <node pkg="rviz2" exec="rviz2" output="screen"
-        args="-d $(var rviz_config_path)" /> -->
+    <node pkg="rviz2" exec="rviz2" output="screen"
+        args="-d $(var rviz_config_path)" />
 </launch>

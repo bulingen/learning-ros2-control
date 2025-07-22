@@ -140,6 +140,16 @@ And then add to your `c_cpp_properties.json`:
 }
 ```
 
+## Course project: controlling arm
+
+**Run like this**
+
+```bash
+ros2 launch my_robot_bringup my_robot.launch.xml
+
+ros2 topic pub /arm_controller/commands std_msgs/msg/Float64MultiArray "data: [0.5, 1.5]"
+```
+
 ## TODO
 
 - Check here, for CI: https://github.com/botamochi6277/ros2_pigpio/blob/main/.github/workflows/main.yml
