@@ -153,3 +153,19 @@ ros2 topic pub /arm_controller/commands std_msgs/msg/Float64MultiArray "data: [0
 ## TODO
 
 - Check here, for CI: https://github.com/botamochi6277/ros2_pigpio/blob/main/.github/workflows/main.yml
+
+## Notes regarding servos
+
+- I measured the pulse widths and angles of the 577 and 507 servos:
+    - 500 - 2500 is making a noise at the boundaries. So that suggests that it's too far.
+    - 800 - 2200 works (and is close to our previous values of 810 - 2200).
+    - when using 800 - 2200 I got these angles:
+        - (measuring with a protractor) assuming center is at 90 degrees
+        - then floor is at 20 degrees
+        - and ceiling is at 160 degrees
+        - that gives us rotational angle of 140 degrees
+        - with 70 degrees from floor to midpoint, and from midpoint to ceiling.
+        - so we could rather say:
+            - center at 0 degrees
+            - then -70 deg anti-clockwise
+            - and +70 deg clockwise
