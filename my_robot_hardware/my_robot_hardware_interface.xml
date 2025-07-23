@@ -8,4 +8,13 @@
             Hardware interface for a mobile base with a pigpio dc motor.
         </description>
     </class>
+    <class
+        name="arm_hardware/ArmHardwareInterface"
+        type="arm_hardware::ArmHardwareInterface"
+        base_class_type="hardware_interface::SystemInterface"
+    >
+        <description>
+            Hardware interface for an arm with a pigpio servos.
+        </description>
+    </class>
 </library>

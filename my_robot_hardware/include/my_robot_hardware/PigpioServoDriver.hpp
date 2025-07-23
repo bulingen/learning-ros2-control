@@ -6,11 +6,9 @@
 #include "my_robot_hardware/Result.hpp"
 #include "my_robot_hardware/DriverError.hpp"
 
-
 class PigpioServoDriver
 {
 public:
-
     /**
      * @param servo_pin Which pin is used for this servo?
      * @param min_pulse_width Defaults to 500 µs, which is the lowest it can be.
@@ -27,8 +25,7 @@ public:
         const double &min_angle = 0.0f,
         const double &max_angle = 180.0f,
         const std::string &host = "localhost",
-        const std::string &port = "8888"
-    )
+        const std::string &port = "8888")
     {
         servo_pin_ = servo_pin;
         min_pulse_width_ = min_pulse_width;
@@ -59,7 +56,7 @@ public:
         {
             // Stop servo pulses
             set_servo_pulsewidth(pigpio_, servo_pin_, 0);
-            
+
             // Disconnect from daemon
             pigpio_stop(pigpio_);
             pigpio_ = -1;
@@ -69,7 +66,8 @@ public:
     // Get the current pulse width from pigpio daemon
     int get_current_pulse_width() const
     {
-        if (!is_connected()) return -1;
+        if (!is_connected())
+            return -1;
         return get_servo_pulsewidth(pigpio_, servo_pin_);
     }
 
@@ -77,7 +75,8 @@ public:
     float get_current_angle() const
     {
         int pulse = get_current_pulse_width();
-        if (pulse < min_pulse_width_ || pulse > max_pulse_width_) return -1;
+        if (pulse < min_pulse_width_ || pulse > max_pulse_width_)
+            return -1;
         // Linear mapping from pulse width to angle
         float angle = (float)(pulse - min_pulse_width_) / (max_pulse_width_ - min_pulse_width_) * 180.0f;
         return angle;
@@ -87,13 +86,14 @@ public:
     float get_current_value() const
     {
         int pulse = get_current_pulse_width();
-        if (pulse < min_pulse_width_ || pulse > max_pulse_width_) return 0.0f;
+        if (pulse < min_pulse_width_ || pulse > max_pulse_width_)
+            return 0.0f;
         // Map pulse width to [-1.0, 1.0]
         float value = 2.0f * (float)(pulse - min_pulse_width_) / (max_pulse_width_ - min_pulse_width_) - 1.0f;
         return value;
     }
 
-    void set_servo_angle(int pin, int angle)
+    void set_servo_angle(int angle)
     {
         // Clamp angle between 0 and 180
         if (angle < 0)
@@ -102,44 +102,48 @@ public:
             angle = 180;
         // Map angle to pulse width (1000-2000us)
         int pulse_width = 1000 + (angle * 1000) / 180;
-        set_servo_pulsewidth(pigpio_, pin, pulse_width);
+        set_servo_pulsewidth(pigpio_, servo_pin_, pulse_width);
     }
 
     // Move servo to center position
-    void go_to_center(int pin)
+    void go_to_center()
     {
         int center_angle = (min_angle_ + max_angle_) / 2;
-        go_to_angle(pin, center_angle);
+        go_to_angle(center_angle);
     }
 
     // Move servo to lowest position
-    void go_to_low(int pin)
+    void go_to_low()
     {
-        go_to_angle(pin, min_angle_);
+        go_to_angle(min_angle_);
     }
 
     // Move servo to highest position
-    void go_to_high(int pin)
+    void go_to_high()
     {
-        go_to_angle(pin, max_angle_);
+        go_to_angle(max_angle_);
     }
 
     // Move servo to a normalized value [-1.0, 1.0]
-    void go_to_value(int pin, float value)
+    void go_to_value(float value)
     {
-        if (value < -1.0f) value = -1.0f;
-        if (value > 1.0f) value = 1.0f;
+        if (value < -1.0f)
+            value = -1.0f;
+        if (value > 1.0f)
+            value = 1.0f;
         float angle = min_angle_ + ((value + 1.0f) / 2.0f) * (max_angle_ - min_angle_);
-        go_to_angle(pin, angle);
+        go_to_angle(angle);
     }
 
     // Move servo to a specific angle
-    void go_to_angle(int pin, float angle)
+    void go_to_angle(float angle)
     {
-        if (angle < min_angle_) angle = min_angle_;
-        if (angle > max_angle_) angle = max_angle_;
+        if (angle < min_angle_)
+            angle = min_angle_;
+        if (angle > max_angle_)
+            angle = max_angle_;
         int pulse_width = min_pulse_width_ + ((angle - min_angle_) / (max_angle_ - min_angle_)) * (max_pulse_width_ - min_pulse_width_);
-        set_servo_pulsewidth(pigpio_, pin, pulse_width);
+        set_servo_pulsewidth(pigpio_, servo_pin_, pulse_width);
     }
 
     // Check if connected to daemon

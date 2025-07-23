@@ -150,9 +150,19 @@ ros2 launch my_robot_bringup my_robot.launch.xml
 ros2 topic pub /arm_controller/commands std_msgs/msg/Float64MultiArray "data: [0.5, 1.5]"
 ```
 
+Note that I get some error when spawning arm controller in launch file. If I comment that out and spawn it manually, at least it starts up.
+But cannot get the arm to move though :(
+
+Okay, it's actually working now. When posting [1.57, 1.57], both joints go to 90 degrees, correctly.
+However, when posting [0.0, 0.0], it doesn't go straight. See screenshot in images folder.
+
+But otherwise, it's working. Run launch file like above (assuming arm controller isn't spawned), then spawn arm controller.
+Then run rviz and the pub command above. Fun times.
+
 ## TODO
 
 - Check here, for CI: https://github.com/botamochi6277/ros2_pigpio/blob/main/.github/workflows/main.yml
+- Shift to using radians instead of degrees, for servo drivers and interfaces and everything really
 
 ## Notes regarding servos
 

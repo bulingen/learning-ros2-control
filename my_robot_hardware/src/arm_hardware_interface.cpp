@@ -117,6 +117,7 @@ namespace arm_hardware
     ArmHardwareInterface::read(const rclcpp::Time &time, const rclcpp::Duration &period)
     {
         (void)time;
+        (void)period;
 
         auto pos_1_deg = driver_1_->get_current_angle();
         auto pos_2_deg = driver_2_->get_current_angle();
@@ -124,10 +125,38 @@ namespace arm_hardware
         double pos_1_rad = pos_1_deg * M_PI / 180.0;
         double pos_2_rad = pos_2_deg * M_PI / 180.0;
 
+        // RCLCPP_INFO(get_logger(), "READ - set state pos1: %f", pos_1_rad);
+
         set_state("arm_joint1/position", pos_1_rad);
         set_state("arm_joint2/position", pos_2_rad);
 
         return hardware_interface::return_type::OK;
     }
 
+    hardware_interface::return_type
+    ArmHardwareInterface::write(const rclcpp::Time &time, const rclcpp::Duration &period)
+    {
+        (void)time;
+        (void)period;
+
+        double pos_1_cmd = get_command("arm_joint1/position");
+        double pos_2_cmd = get_command("arm_joint2/position");
+
+        // RCLCPP_INFO(get_logger(), "WRITE - command pos1: %f", pos_1_cmd);
+
+        // double pos1rad = pos_1_cmd * M_PI / 180.0;
+        // double pos2rad = pos_2_cmd * M_PI / 180.0;
+        double degrees1 = pos_1_cmd * 180.0 / M_PI;
+        double degrees2 = pos_2_cmd * 180.0 / M_PI;
+
+        driver_1_->set_servo_angle(degrees1);
+        driver_2_->set_servo_angle(degrees2);
+
+        return hardware_interface::return_type::OK;
+    }
+
 } // namespace arm_hardware
+
+#include "pluginlib/class_list_macros.hpp"
+
+PLUGINLIB_EXPORT_CLASS(arm_hardware::ArmHardwareInterface, hardware_interface::SystemInterface)
