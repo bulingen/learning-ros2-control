@@ -2,8 +2,19 @@
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro">
     <ros2_control name="Arm" type="system">
         <hardware>
-            <plugin>mock_components/GenericSystem</plugin>
-            <param name="calculate_dynamics">true</param>
+            <!-- <plugin>mock_components/GenericSystem</plugin>
+            <param name="calculate_dynamics">true</param> -->
+
+            <plugin>arm_hardware/ArmHardwareInterface</plugin>
+            <param name="servo_pin_1">13</param>
+            <param name="servo_pin_2">19</param>
+            <param name="min_pulse_width">800</param>
+            <param name="max_pulse_width">2200</param>
+            <!-- TODO: shift to using radians everywhere instead -->
+            <param name="min_angle">0.0</param>
+            <param name="max_angle">140.0</param>
+            <param name="pigpiod_host">localhost</param>
+            <param name="pigpiod_port">8888</param>
         </hardware>
         <joint name="arm_joint1">
             <command_interface name="position" />
