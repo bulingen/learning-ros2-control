@@ -179,3 +179,27 @@ Then run rviz and the pub command above. Fun times.
             - center at 0 degrees
             - then -70 deg anti-clockwise
             - and +70 deg clockwise
+
+
+## Notes on running with Gazebo
+
+First, install stuff:
+
+```bash
+sudo apt install ros-jazzy-ros-gz
+sudo apt install ros-jazzy-gz-ros2-control
+```
+
+Then launch:
+
+```bash
+ros2 launch my_robot_bringup my_robot.gazebo.launch.xml
+```
+
+And drive with:
+
+```bash
+ros2 run teleop_twist_keyboard  teleop_twist_keyboard --ros-args -r /cmd_vel:=/diff_drive_controller/cmd_vel -p stamped:=true -p rate:=20
+
+ros2 topic pub /arm_controller/commands std_msgs/msg/Float64MultiArray "data: [0.0, 0.0]"
+```
