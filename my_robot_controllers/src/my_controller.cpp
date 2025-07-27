@@ -82,3 +82,7 @@ namespace my_controller
     }
 
 } // namespace my_controller
+
+#include "pluginlib/class_list_macros.hpp"
+
+PLUGINLIB_EXPORT_CLASS(my_controller::MyController, controller_interface::ControllerInterface);
