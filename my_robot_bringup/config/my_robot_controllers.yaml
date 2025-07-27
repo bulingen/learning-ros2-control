@@ -14,6 +14,9 @@ controller_manager:
     arm_controller:
       type: forward_command_controller/ForwardCommandController
 
+    my_arm_controller:
+      type: my_controller/MyController
+
 diff_drive_controller:
   ros__parameters:
     left_wheel_names: ["base_left_wheel_joint"]
@@ -55,3 +58,10 @@ arm_controller:
   ros__parameters:
     joints: ["arm_joint1", "arm_joint2"]
     interface_name: "position"
+
+my_arm_controller:
+  ros__parameters:
+    joints: ["arm_joint1", "arm_joint2"]
+    interface_name: "position"
+    coefficient: 0.05
+
