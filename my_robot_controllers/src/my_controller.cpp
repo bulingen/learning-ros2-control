@@ -6,7 +6,7 @@ namespace my_controller
 
     controller_interface::CallbackReturn MyController::on_init()
     {
-        joint_names_ = auto_declare<std::vector<std::string>>("", {});
+        joint_names_ = auto_declare<std::vector<std::string>>("joints", {});
         interface_name_ = auto_declare<std::string>("interface_name", "position");
         coefficient_ = auto_declare<double>("coefficient", 0.8);
         return controller_interface::CallbackReturn::SUCCESS;
@@ -41,7 +41,7 @@ namespace my_controller
         {
             config.names.push_back(joint_name + "/" + interface_name_);
         }
-        return controller_interface::InterfaceConfiguration();
+        return config;
     }
 
     controller_interface::InterfaceConfiguration MyController::state_interface_configuration() const
@@ -53,7 +53,7 @@ namespace my_controller
         {
             config.names.push_back(joint_name + "/" + interface_name_);
         }
-        return controller_interface::InterfaceConfiguration();
+        return config;
     }
 
     controller_interface::CallbackReturn MyController::on_activate(const rclcpp_lifecycle::State &previous_state)
