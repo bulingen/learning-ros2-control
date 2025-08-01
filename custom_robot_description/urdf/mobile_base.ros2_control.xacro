@@ -4,11 +4,11 @@
 
     <ros2_control name="MobileBaseHardwareInterface" type="system">
         <hardware>
-            <!-- <plugin>mock_components/GenericSystem</plugin>
-            <param name="calculate_dynamics">true</param> -->
-            <plugin>propeller_hardware/PropellerHardwareInterface</plugin>
+            <plugin>mock_components/GenericSystem</plugin>
+            <param name="calculate_dynamics">true</param>
+            <!-- <plugin>propeller_hardware/PropellerHardwareInterface</plugin>
             <param name="pigpiod_host">localhost</param>
-            <param name="pigpiod_port">8888</param>
+            <param name="pigpiod_port">8888</param> -->
         </hardware>
 
         <joint name="propeller_joint">

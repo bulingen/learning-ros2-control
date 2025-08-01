@@ -3,20 +3,22 @@
 
     <xacro:property name="base_length" value="1.0" />
     <xacro:property name="base_radius" value="0.06" />
+    <xacro:property name="blade_full_length" value="0.1" />
+    <xacro:property name="blade_width" value="0.02" />
+    <xacro:property name="blade_height" value="0.01" />
 
-    <!-- BASE LINK -->
-    <link name="base_link"></link>
+    <link name="base_footprint" />
 
-    <!-- CHASSIS LINK -->
-    <joint name="chassis_joint" type="fixed">
-        <parent link="base_link" />
-        <child link="chassis" />
-        <origin xyz="0 0 0" rpy="0 ${pi/2} 0" />
+
+    <joint name="base_joint" type="fixed">
+        <parent link="base_footprint" />
+        <child link="base_link" />
+        <origin xyz="0 0 ${base_radius}" rpy="0 0 0" />
     </joint>
 
-    <link name="chassis">
+    <link name="base_link">
         <visual>
-            <origin xyz="0 0 0" rpy="0 0 0" />
+            <origin xyz="0 0 0" rpy="0 ${pi/2} 0" />
             <geometry>
                 <cylinder radius="${base_radius}" length="${base_length}" />
             </geometry>
@@ -26,13 +28,12 @@
             <geometry>
                 <cylinder radius="${base_radius}" length="${base_length}" />
             </geometry>
-            <origin xyz="0 0 0" rpy="0 0 0" />
+            <origin xyz="0 0 0" rpy="0 ${pi/2} 0" />
         </collision>
         <xacro:cylinder_inertia m="5.0" r="${base_radius}" l="${base_length}"
-            o_xyz="0 0 0" o_rpy="0 0 0" />
+            o_xyz="0 0 0" o_rpy="0 ${pi/2} 0" />
     </link>
 
-    <!-- PROPELLER LINK -->
     <joint name="propeller_joint" type="continuous">
         <parent link="base_link" />
         <child link="propeller" />
@@ -43,18 +44,18 @@
     <link name="propeller">
         <visual>
             <geometry>
-                <box size="0.2 0.02 0.01" />
+                <box size="${blade_full_length} ${blade_width} ${blade_height}" />
             </geometry>
             <material name="orange" />
             <origin xyz="0 0 0" rpy="0 0 0" />
         </visual>
         <collision>
             <geometry>
-                <box size="0.2 0.02 0.01" />
+                <box size="${blade_full_length} ${blade_width} ${blade_height}" />
             </geometry>
             <origin xyz="0 0 0" rpy="0 0 0" />
         </collision>
-        <xacro:box_inertia m="0.02" x="0.2" y="0.02" z="0.01"
+        <xacro:box_inertia m="0.02" x="${blade_full_length}" y="${blade_width}" z="${blade_height}"
             o_xyz="0 0 0" o_rpy="0 0 0" />
     </link>
 
