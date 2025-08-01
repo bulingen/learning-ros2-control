@@ -77,6 +77,12 @@ ros2 run custom_robot_teleop cmd_vel_to_single_array
 ros2 run teleop_twist_keyboard teleop_twist_keyboard --ros-args -p rate:=20
 ```
 
+## Display custom robot
+
+```bash
+ros2 launch custom_robot_description display.launch.xml
+```
+
 ## Install pigpio
 
 Pigpio is not available in the default Ubuntu apt repository. One could install it from source, from here: https://abyz.me.uk/rpi/pigpio/download.html
