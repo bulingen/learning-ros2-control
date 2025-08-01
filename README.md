@@ -22,7 +22,7 @@ colcon build
 ## Run things
 
 ```bash
-ros2 run robot_state_publisher robot_state_publisher --ros-args -p robot_description:="$(xacro /absolute/path/to/ws/src/my_robot_description/urdf/my_robot.urdf.xacro)"
+ros2 run robot_state_publisher robot_state_publisher --ros-args -p robot_description:="$(xacro /absolute/path/to/ws/src/my_robot_description/urdf/custom_robot.urdf.xacro)"
 
 ros2 run controller_manager ros2_control_node --ros-args --remap /controller_manager/robot_description:=/robot_description --params-file /absolute/path/to/ws/src/my_robot_bringup/config/my_robot_controllers.yaml
 
@@ -73,6 +73,14 @@ ros2 topic pub /velocity_controller/commands std_msgs/msg/Float64MultiArray "dat
 You can also use `teleop_twist_keyboard` like this:
 
 ```bash
+ros2 run custom_robot_teleop cmd_vel_to_single_array
+ros2 run teleop_twist_keyboard teleop_twist_keyboard --ros-args -p rate:=20
+```
+
+Or, the easiest way:
+
+```bash
+ros2 launch custom_robot_bringup custom_robot.launch.xml
 ros2 run custom_robot_teleop cmd_vel_to_single_array
 ros2 run teleop_twist_keyboard teleop_twist_keyboard --ros-args -p rate:=20
 ```

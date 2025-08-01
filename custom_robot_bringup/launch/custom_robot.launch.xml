@@ -1,6 +1,8 @@
 <launch>
     <let name="urdf_path"
         value="$(find-pkg-share custom_robot_description)/urdf/custom_robot.urdf.xacro" />
+    <let name="rviz_config_path"
+        value="$(find-pkg-share custom_robot_description)/rviz/display.rviz" />
 
     <node pkg="robot_state_publisher" exec="robot_state_publisher">
         <param name="robot_description"
@@ -8,7 +10,8 @@
     </node>
 
     <node pkg="controller_manager" exec="ros2_control_node">
-        <!-- NOTE: commenting out remapping, since I'm now on Jazzy. That was needed in Humble for some reason -->
+        <!-- NOTE: commenting out remapping, since I'm now on Jazzy. That was needed in Humble for
+        some reason -->
         <!-- <remap from="/controller_manager/robot_description" to="/robot_description" /> -->
         <param from="$(find-pkg-share custom_robot_bringup)/config/custom_robot_controllers.yaml" />
     </node>
@@ -17,6 +20,6 @@
     <node pkg="controller_manager" exec="spawner" args="velocity_controller" />
 
     <!-- NOTE: commenting out rviz here, since I run it on rpi. Will run rviz on PC instead -->
-    <!-- <node pkg="rviz2" exec="rviz2" output="screen"
-        args="-d $(var rviz_config_path)" /> -->
+    <node pkg="rviz2" exec="rviz2" output="screen"
+        args="-d $(var rviz_config_path)" />
 </launch>
