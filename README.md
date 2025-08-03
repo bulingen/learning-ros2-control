@@ -235,6 +235,8 @@ gz sim -r src/custom_robot_bringup/worlds/kind_of_working_physics.sdf
 Maybe quadratic damping in X needs to be reduced a bit? Perhaps it's slowing down to quickly when applying a force forwards?
 Anyway, good enough for now. Need to fix so that I can use that setup when spawning my robot.
 
+At least I need to change my URDF to having the same-ish values found in that file.
+
 **Utils**
 
 Use scripts in `custom_robot_bringup/scripts` for getting hydrodynamic params, for cylinders, boxes and spheres, and also STL files (you'll have to locate the DAE file for tethys yourself and generate an STL file, maybe like this `assimp export tethys.dae ~/tethys.stl`).
