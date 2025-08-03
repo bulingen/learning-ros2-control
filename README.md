@@ -223,3 +223,14 @@ ros2 run teleop_twist_keyboard  teleop_twist_keyboard --ros-args -r /cmd_vel:=/d
 
 ros2 topic pub /arm_controller/commands std_msgs/msg/Float64MultiArray "data: [0.0, 0.0]"
 ```
+
+## Notes on simulating cylinder in water in gazebo
+
+Got it working pretty okay. Try this:
+
+```bash
+gz sim -r src/custom_robot_bringup/worlds/kind_of_working_physics.sdf
+```
+
+Maybe quadratic damping in X needs to be reduced a bit? Perhaps it's slowing down to quickly when applying a force forwards?
+Anyway, good enough for now. Need to fix so that I can use that setup when spawning my robot.

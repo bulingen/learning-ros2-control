@@ -1,0 +1,462 @@
+<sdf version='1.10'>
+    <world name='buoyancy'>
+        <physics name='1ms' type='ode'>
+            <!-- <max_step_size>0.001</max_step_size> -->
+            <max_step_size>0.0005</max_step_size>
+            <!-- <max_step_size>0.0001</max_step_size> -->
+            <real_time_factor>1</real_time_factor>
+            <real_time_update_rate>1000</real_time_update_rate>
+        </physics>
+        <gravity>0 0 -9.8000000000000007</gravity>
+        <plugin name='gz::sim::systems::Physics' filename='gz-sim-physics-system' />
+        <plugin name='gz::sim::systems::UserCommands' filename='gz-sim-user-commands-system' />
+        <plugin name='gz::sim::systems::SceneBroadcaster' filename='gz-sim-scene-broadcaster-system' />
+        <plugin name='gz::sim::systems::Buoyancy' filename='gz-sim-buoyancy-system'>
+            <graded_buoyancy>
+                <default_density>1000</default_density>
+                <density_change>
+                    <above_depth>0</above_depth>
+                    <density>1</density>
+                </density_change>
+            </graded_buoyancy>
+            <enable>ball::body</enable>
+            <enable>cylinder::body</enable>
+            <enable>robust_submarine::body</enable>
+            <!-- <default_density>1000</default_density>
+      <density_change>
+        <above_depth>0.5</above_depth>
+        <density>10</density>
+      </density_change>
+      <density_change>
+        <above_depth>0</above_depth>
+        <density>1000</density>
+      </density_change>
+      <enable>korv</enable> -->
+            <!-- <uniform_fluid_density>1000</uniform_fluid_density> -->
+        </plugin>
+
+        <magnetic_field>5.5644999999999998e-06 2.2875799999999999e-05 -4.2388400000000002e-05</magnetic_field>
+        <atmosphere type='adiabatic' />
+        <scene>
+            <ambient>0.400000006 0.400000006 0.400000006 1</ambient>
+            <background>0.699999988 0.699999988 0.699999988 1</background>
+            <shadows>true</shadows>
+        </scene>
+        <model name='water_plane'>
+            <static>true</static>
+            <link name='link'>
+                <visual name='water_plane'>
+                    <geometry>
+                        <plane>
+                            <size>100 100</size>
+                            <normal>0 0 1</normal>
+                        </plane>
+                    </geometry>
+                    <material>
+                        <ambient>0 0 1 0.5</ambient>
+                        <diffuse>0 0 1 0.5</diffuse>
+                        <specular>0 0 1 0.5</specular>
+                    </material>
+                </visual>
+                <pose>0 0 0 0 0 0</pose>
+                <inertial>
+                    <pose>0 0 0 0 0 0</pose>
+                    <mass>1</mass>
+                    <inertia>
+                        <ixx>1</ixx>
+                        <ixy>0</ixy>
+                        <ixz>0</ixz>
+                        <iyy>1</iyy>
+                        <iyz>0</iyz>
+                        <izz>1</izz>
+                    </inertia>
+                </inertial>
+                <enable_wind>false</enable_wind>
+            </link>
+            <pose>0 0 0 0 0 0</pose>
+            <self_collide>false</self_collide>
+        </model>
+        <model name="robust_submarine">
+            <plugin name='gz::sim::systems::Hydrodynamics' filename='gz-sim-hydrodynamics-system'>
+
+                <!-- Added mass: -->
+                <!-- <xDotU>-1.130973</xDotU>
+        <yDotV>-11.309734</yDotV>
+        <zDotW>-11.309734</zDotW>
+        <kDotP>0</kDotP>
+        <mDotQ>0</mDotQ>
+        <nDotR>0</nDotR> -->
+                <!-- First order stability derivative: -->
+                <!-- <xU>0</xU>
+        <yV>0</yV> -->
+                <!-- <zW>0</zW> -->
+                <!-- <kP>0</kP>
+        <mQ>0</mQ>
+        <nR>0</nR>
+        <zW>-10</zW> -->
+                <!-- Second order stability derivative: -->
+                <!-- <xUabsU>-4.636991</xUabsU>
+        <yVabsV>-60.000000</yVabsV>
+        <zWabsW>-60.000000</zWabsW>
+        <kPabsP>-0.05</kPabsP>
+        <mQabsQ>-0.5</mQabsQ>
+        <nRabsR>-0.5</nRabsR> -->
+
+                <!-- <xDotU>-1.1</xDotU>
+        <yDotV>-11.3</yDotV>
+        <zDotW>-11.3</zDotW>
+        <kDotP>0</kDotP>
+        <mDotQ>0</mDotQ>
+        <nDotR>0</nDotR> -->
+                <!-- <xU>0</xU>
+        <yV>0</yV>
+        <zW>-10</zW> -->
+                <!-- <xU>-5</xU>
+        <yV>-12</yV>
+        <zW>-10</zW>
+        <kP>0</kP>
+        <mQ>0</mQ>
+        <nR>0</nR>
+        <xUabsU>-4.6</xUabsU>
+        <yVabsV>-60</yVabsV> -->
+                <!-- <xUabsU>-10</xUabsU>
+        <yVabsV>-120</yVabsV> -->
+
+                <!-- <zWabsW>-60</zWabsW>
+        <kPabsP>-0.05</kPabsP>
+        <mQabsQ>-0.5</mQabsQ>
+        <nRabsR>-5</nRabsR> -->
+
+                <xDotU>-1.1</xDotU> <!-- Added mass in surge (X), opposes acceleration along X
+                (forward/back) -->
+                <yDotV>-11.3</yDotV> <!-- Added mass in sway (Y), opposes acceleration along Y
+                (sideways) -->
+                <zDotW>-11.3</zDotW> <!-- Added mass in heave (Z), opposes acceleration along Z
+                (up/down) -->
+                <kDotP>0</kDotP> <!-- Added mass in roll (rotation about X), usually small/negligible -->
+                <mDotQ>0</mDotQ> <!-- Added mass in pitch (rotation about Y), usually
+                small/negligible -->
+                <nDotR>0</nDotR> <!-- Added mass in yaw (rotation about Z), usually small/negligible -->
+
+                <xU>-5</xU> <!-- Linear damping in surge (X), opposes velocity along X (forward/back) -->
+                <yV>-12</yV> <!-- Linear damping in sway (Y), opposes velocity along Y (sideways) -->
+                <zW>-10</zW> <!-- Linear damping in heave (Z), opposes velocity along Z (up/down) -->
+                <kP>0</kP> <!-- Linear angular damping in roll (rotation about X) -->
+                <mQ>0</mQ> <!-- Linear angular damping in pitch (rotation about Y) -->
+                <nR>0</nR> <!-- Linear angular damping in yaw (rotation about Z) -->
+
+                <xUabsU>-4.6</xUabsU> <!-- Quadratic damping in surge (X), opposes velocity squared
+                along X
+        (forward/back) -->
+                <yVabsV>-60</yVabsV> <!-- Quadratic damping in sway (Y), opposes velocity squared
+                along Y
+        (sideways) -->
+                <zWabsW>-60</zWabsW> <!-- Quadratic damping in heave (Z), opposes velocity squared
+                along Z
+        (up/down) -->
+                <kPabsP>-0.05</kPabsP> <!-- Quadratic angular damping in roll (rotation about X) -->
+                <mQabsQ>-0.5</mQabsQ> <!-- Quadratic angular damping in pitch (rotation about Y) -->
+                <nRabsR>-5</nRabsR> <!-- Quadratic angular damping in yaw (rotation about Z) -->
+
+                <link_name>body</link_name>
+
+                <!-- <xDotU>-4.876161</xDotU>
+        <yDotV>-126.324739</yDotV>
+        <zDotW>-126.324739</zDotW>
+        <kDotP>0</kDotP>
+        <mDotQ>-33.46</mDotQ>
+        <nDotR>-33.46</nDotR>
+        <xUabsU>-6.2282</xUabsU>
+        <xU>0</xU>
+        <yVabsV>-601.27</yVabsV>
+        <yV>0</yV>
+        <zWabsW>-601.27</zWabsW>
+        <zW>0</zW>
+        <kPabsP>-0.1916</kPabsP>
+        <kP>0</kP>
+        <mQabsQ>-632.698957</mQabsQ>
+        <mQ>0</mQ>
+        <nRabsR>-632.698957</nRabsR>
+        <nR>0</nR> -->
+            </plugin>
+            <pose>0 0 1 0 0 0</pose>
+            <link name="body">
+                <pose>0 0 0 0 0 0</pose>
+                <inertial>
+                    <mass>12</mass>
+                    <inertia>
+                        <ixx>0.0288</ixx>
+                        <iyy>1.0144</iyy>
+                        <izz>1.0144</izz>
+                        <ixy>0</ixy>
+                        <ixz>0</ixz>
+                        <iyz>0</iyz>
+                    </inertia>
+                </inertial>
+                <velocity_decay>
+                    <linear>5.0</linear>
+                    <angular>5.0</angular>
+                </velocity_decay>
+                <collision name="body_collision">
+                    <geometry>
+                        <box>
+                            <size>1.0 0.12 0.12</size>
+                        </box>
+                    </geometry>
+                </collision>
+                <visual name="body_visual">
+                    <!-- <geometry>
+            <box>
+              <size>2.0 0.3 0.25</size>
+            </box>
+          </geometry>
+          <material>
+            <diffuse>0.2 0.2 0.8 1</diffuse>
+            <ambient>0.2 0.2 0.8 1</ambient>
+          </material> -->
+                    <geometry>
+                        <cylinder>
+                            <radius>0.06</radius>
+                            <length>1.0</length>
+                        </cylinder>
+                    </geometry>
+                    <pose>0 0 0 0 1.57 0</pose>
+                    <material>
+                        <diffuse>0.2 0.2 0.8 1</diffuse>
+                        <ambient>0.2 0.2 0.8 1</ambient>
+                    </material>
+                </visual>
+            </link>
+        </model>
+        <!-- <model name="cylinder">
+      <plugin name='gz::sim::systems::Hydrodynamics' filename='gz-sim-hydrodynamics-system'>
+
+        <xDotU>-1.130973</xDotU>
+        <yDotV>-11.309734</yDotV>
+        <zDotW>-11.309734</zDotW>
+        <kDotP>0</kDotP>
+        <mDotQ>0</mDotQ>
+        <nDotR>0</nDotR>
+
+        <xU>0</xU>
+        <yV>0</yV>
+        <zW>0</zW>
+        <kP>0</kP>
+        <mQ>0</mQ>
+        <nR>0</nR>
+
+        <xUabsU>-4.636991</xUabsU>
+        <yVabsV>-60.000000</yVabsV>
+        <zWabsW>-60.000000</zWabsW>
+        <kPabsP>0</kPabsP>
+        <mQabsQ>0</mQabsQ>
+        <nRabsR>0</nRabsR>
+        <link_name>body</link_name>
+      </plugin>
+
+      <pose>0 0 0.5 0 1.57079632679 0</pose>
+      <link name="body">
+        <pose>0 0 0 0 0 0</pose>
+        <inertial>
+          <mass>5</mass>
+          <inertia>
+            <ixx>0.009</ixx>
+            <iyy>0.418</iyy>
+            <izz>0.418</izz>
+            <ixy>0</ixy>
+            <ixz>0</ixz>
+            <iyz>0</iyz>
+          </inertia>
+        </inertial>
+        <collision name="body_collision">
+          <geometry>
+            <box>
+              <size>1.0 0.12 0.12</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="body_visual">
+          <geometry>
+            <cylinder>
+              <radius>0.06</radius>
+              <length>1.0</length>
+            </cylinder>
+          </geometry>
+          <pose>0 0 0 0 0 0</pose>
+          <material>
+            <diffuse>0.2 0.2 0.8 1</diffuse>
+            <ambient>0.2 0.2 0.8 1</ambient>
+          </material>
+        </visual>
+      </link>
+    </model> -->
+        <model name="ball">
+            <plugin name='gz::sim::systems::Hydrodynamics' filename='gz-sim-hydrodynamics-system'>
+                <!-- <xDotU>-11.309734</xDotU>
+        <yDotV>-11.309734</yDotV>
+        <zDotW>-6.785840</zDotW>
+        <kDotP>0</kDotP>
+        <mDotQ>0</mDotQ>
+        <nDotR>0</nDotR>
+        <xUabsU>-10.0</xUabsU>
+        <yVabsV>-20.0</yVabsV>
+        <zWabsW>-40.0</zWabsW>
+        <kPabsP>0</kPabsP>
+        <mQabsQ>0</mQabsQ>
+        <nRabsR>0</nRabsR>
+        <xU>-50</xU>
+        <yV>-50</yV>
+        <zW>-80</zW>
+        <kP>-1</kP>
+        <mQ>-1</mQ>
+        <nR>-2</nR> -->
+                <!-- Added mass: -->
+                <xDotU>-16.755161</xDotU>
+                <yDotV>-16.755161</yDotV>
+                <zDotW>-16.755161</zDotW>
+                <kDotP>0</kDotP>
+                <mDotQ>0</mDotQ>
+                <nDotR>0</nDotR>
+                <!-- First order stability derivative: -->
+                <xU>0</xU>
+                <yV>0</yV>
+                <zW>0</zW>
+                <kP>0</kP>
+                <mQ>0</mQ>
+                <nR>0</nR>
+                <!-- Second order stability derivative: -->
+                <xUabsU>-29.530971</xUabsU>
+                <yVabsV>-29.530971</yVabsV>
+                <zWabsW>-29.530971</zWabsW>
+                <kPabsP>0</kPabsP>
+                <mQabsQ>0</mQabsQ>
+                <nRabsR>0</nRabsR>
+                <link_name>body</link_name>
+            </plugin>
+            <link name='body'>
+                <pose>5 5 -10 0 0 0</pose>
+                <inertial>
+                    <mass>25</mass>
+                    <inertia>
+                        <ixx>86.28907821859966</ixx>
+                        <ixy>0</ixy>
+                        <ixz>0</ixz>
+                        <iyy>86.28907821859966</iyy>
+                        <iyz>0</iyz>
+                        <izz>5.026548245743671</izz>
+                    </inertia>
+                </inertial>
+
+                <visual name='body_visual'>
+                    <geometry>
+                        <sphere>
+                            <radius>0.2</radius>
+                        </sphere>
+                    </geometry>
+                </visual>
+                <collision name='body_collision'>
+                    <geometry>
+                        <sphere>
+                            <radius>0.2</radius>
+                        </sphere>
+                    </geometry>
+                </collision>
+            </link>
+        </model>
+        <!-- <model name='korv'>
+      <plugin name='gz::sim::systems::Hydrodynamics' filename='gz-sim-hydrodynamics-system'>
+        <xDotU>-11.309734</xDotU>
+        <yDotV>-11.309734</yDotV>
+        <zDotW>-6.785840</zDotW>
+        <kDotP>0</kDotP>
+        <mDotQ>0</mDotQ>
+        <nDotR>0</nDotR>
+        <xUabsU>-10.0</xUabsU>
+        <yVabsV>-20.0</yVabsV>
+        <zWabsW>-40.0</zWabsW>
+        <kPabsP>0</kPabsP>
+        <mQabsQ>0</mQabsQ>
+        <nRabsR>0</nRabsR>
+        <xU>-50</xU>
+        <yV>-50</yV>
+        <zW>-80</zW>
+        <kP>-1</kP>
+        <mQ>-1</mQ>
+        <nR>-2</nR>
+        <link_name>base_footprint</link_name>
+      </plugin>
+      <link name='base_footprint'>
+        <inertial>
+          <pose>0 0 0.059999999999999998 0 0 0</pose>
+          <mass>6</mass>
+          <inertia>
+            <ixx>0.010800000000000001</ixx>
+            <ixy>0</ixy>
+            <ixz>-3.0285515342914041e-17</ixz>
+            <iyy>0.50539999999999996</iyy>
+            <iyz>0</iyz>
+            <izz>0.50539999999999996</izz>
+          </inertia>
+        </inertial>
+        <collision name='base_footprint_fixed_joint_lump__base_link_collision'>
+          <pose>0 0 0.059999999999999998 0 1.5707963267948966 0</pose>
+          <geometry>
+            <box>
+              <size>0.12 0.12 1</size>
+            </box>
+          </geometry>
+          <surface>
+            <friction>
+              <ode />
+            </friction>
+            <bounce />
+            <contact />
+          </surface>
+        </collision>
+        <visual name='base_footprint_fixed_joint_lump__base_link_visual'>
+          <pose>0 0 0.059999999999999998 0 1.5707963267948966 0</pose>
+          <geometry>
+            <cylinder>
+              <length>1</length>
+              <radius>0.059999999999999998</radius>
+            </cylinder>
+          </geometry>
+          <material>
+            <diffuse>1 1 1 1</diffuse>
+            <ambient>1 1 1 1</ambient>
+          </material>
+        </visual>
+        <pose>0 0 0 0 0 0</pose>
+        <enable_wind>false</enable_wind>
+      </link>
+      <frame name='base_joint' attached_to='base_footprint'>
+        <pose>0 0 0.059999999999999998 0 0 0</pose>
+      </frame>
+      <frame name='base_link' attached_to='base_joint'>
+        <pose>0 0 0 0 0 0</pose>
+      </frame>
+      <pose>0 0 0 0 0 0</pose>
+      <static>false</static>
+      <self_collide>false</self_collide>
+    </model> -->
+        <light name='sun' type='directional'>
+            <pose>0 0 10 0 0 0</pose>
+            <cast_shadows>true</cast_shadows>
+            <intensity>1</intensity>
+            <direction>-0.5 0.10000000000000001 -0.90000000000000002</direction>
+            <diffuse>1 1 1 1</diffuse>
+            <specular>0.5 0.5 0.5 1</specular>
+            <attenuation>
+                <range>1000</range>
+                <linear>0.01</linear>
+                <constant>0.90000000000000002</constant>
+                <quadratic>0.001</quadratic>
+            </attenuation>
+            <spot>
+                <inner_angle>0</inner_angle>
+                <outer_angle>0</outer_angle>
+                <falloff>0</falloff>
+            </spot>
+        </light>
+    </world>
+</sdf>
