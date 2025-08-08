@@ -19,6 +19,15 @@ source /opt/ros/jazzy/setup.zsh
 colcon build
 ```
 
+## Creating URDF from scratch
+
+Here's a nice way of getting started with visualizing a URDF:
+
+```bash
+ros2 launch urdf_tutorial display.launch.py model:=/absolute/path/to/ws/src/robot_description/urdf/robot.urdf.xacro
+```
+
+
 ## Run things
 
 ```bash
