@@ -251,3 +251,18 @@ At least I need to change my URDF to having the same-ish values found in that fi
 Use scripts in `custom_robot_bringup/scripts` for getting hydrodynamic params, for cylinders, boxes and spheres, and also STL files (you'll have to locate the DAE file for tethys yourself and generate an STL file, maybe like this `assimp export tethys.dae ~/tethys.stl`).
 
 Note that Gazebo always crashed for boxes with mass less than 12 kg. Don't ask me :shrug: 
+
+
+## Even more custom robot
+
+```bash
+# display
+ros2 launch custom_robot_description display_auv.launch.xml
+
+# inspect the urdf that xacro creates
+ros2 run xacro xacro /absolute/path/to/src/custom_robot_description/urdf/auv.urdf.xacro
+
+
+# launch in gazebo
+ros2 launch custom_robot_bringup auv.gazebo.launch.xml
+```
