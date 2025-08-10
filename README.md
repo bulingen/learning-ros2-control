@@ -192,6 +192,7 @@ Then run rviz and the pub command above. Fun times.
 
 - Check here, for CI: https://github.com/botamochi6277/ros2_pigpio/blob/main/.github/workflows/main.yml
 - Shift to using radians instead of degrees, for servo drivers and interfaces and everything really
+- Model with keel and foam fin?
 
 ## Notes regarding servos
 
@@ -262,7 +263,28 @@ ros2 launch custom_robot_description display_auv.launch.xml
 # inspect the urdf that xacro creates
 ros2 run xacro xacro /absolute/path/to/src/custom_robot_description/urdf/auv.urdf.xacro
 
-
 # launch in gazebo
 ros2 launch custom_robot_bringup auv.gazebo.launch.xml
+
+# list all available worlds
+ll /opt/ros/jazzy/opt/gz_sim_vendor/share/gz/gz-sim8/worlds/
+
+# launch a world
+ros2 launch ros_gz_sim gz_sim.launch.py gz_args:="empty.sdf -r"
+
+# start publishing description
+ros2 run robot_state_publisher robot_state_publisher --ros-args -p robot_description:="$(xacro /absolute/path/to/ws/src/custom_robot_description/urdf/auv_gazebo.xacro)"
+
+# spawn the description
+ros2 run ros_gz_sim create -topic robot_description
 ```
+
+## To inspect what is being created in gazebo, given the urdf
+
+```bash
+ros2 run xacro xacro your_file.xacro > your_file.urdf
+
+gz sdf -p your_file.urdf > your_file.sdf
+```
+
+Or: spawn the robot in gazebo, then save the world file and open that file, to see what has been created.
