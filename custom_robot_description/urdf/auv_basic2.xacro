@@ -1,23 +1,15 @@
 <?xml version="1.0"?>
 <robot name="auv" xmlns:xacro="http://www.ros.org/wiki/xacro">
 
-    <!-- Dummy root link -->
     <link name="base_link" />
 
-    <!-- Joint that rotates cylinder frame 90 degrees about Y -->
     <joint name="base_to_cylinder" type="fixed">
         <parent link="base_link" />
         <child link="cylinder_link" />
-        <!-- <origin xyz="0 0 0" rpy="0 1.57079632679 0" /> -->
-
-        <!-- lets not rotate it and see how it floats -->
         <origin xyz="0 0 0" rpy="0 0 0" />
     </joint>
 
-    <!-- Cylinder link -->
     <link name="cylinder_link">
-
-        <!-- Visual cylinder along Z axis (default) -->
         <visual>
             <origin xyz="0 0 0" rpy="0 ${pi/2} 0" />
             <geometry>
@@ -28,28 +20,6 @@
             </material>
         </visual>
 
-        <!-- Collision box matching cylinder, no rotation -->
-        <!-- <collision>
-            <origin xyz="0 0 0" rpy="0 0 0" />
-            <geometry>
-                <box size="0.114 0.114 1.0" />
-            </geometry>
-        </collision> -->
-
-        <!-- Inertial with COM offset along local Z (radius) -->
-        <!-- <inertial>
-            <mass value="8.0" />
-            <origin xyz="0 0 0" rpy="0 0 0" />
-            <inertia
-                ixx="0.673165"
-                ixy="0"
-                ixz="0"
-                iyy="0.673165"
-                iyz="0"
-                izz="0.012996" />
-                </inertial> -->
-
-        <!-- partially stolen from tethys -->
         <collision>
             <geometry>
                 <box size="1 0.114 0.114" />
@@ -59,9 +29,6 @@
 
 
         <inertial>
-            <!-- <mass value="8.0" /> -->
-            <!-- <mass value="10.20186" /> -->
-
             <!-- this will make it neutral. use collision as volume -->
             <!-- <mass value="12.996" /> -->
             <mass value="10.996" />

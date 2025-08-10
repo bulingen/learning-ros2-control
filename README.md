@@ -193,6 +193,7 @@ Then run rviz and the pub command above. Fun times.
 - Check here, for CI: https://github.com/botamochi6277/ros2_pigpio/blob/main/.github/workflows/main.yml
 - Shift to using radians instead of degrees, for servo drivers and interfaces and everything really
 - Model with keel and foam fin?
+- Recalculate mass, given the density of a cylinder distributed over the collision box
 
 ## Notes regarding servos
 
