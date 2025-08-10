@@ -288,3 +288,19 @@ gz sdf -p your_file.urdf > your_file.sdf
 ```
 
 Or: spawn the robot in gazebo, then save the world file and open that file, to see what has been created.
+
+## Launch auv in gazebo
+
+```bash
+ros2 launch ros_gz_sim gz_sim.launch.py gz_args:="/home/bulingen/Code/course_ws/src/custom_robot_bringup/worlds/water.sdf -r"
+
+ros2 run robot_state_publisher robot_state_publisher --ros-args -p robot_description:="$(xacro /home/bulingen/Code/course_ws/src/custom_robot_description/urdf/auv_gazebo.xacro)"
+
+ros2 run ros_gz_sim create -topic robot_description -z -5.0
+```
+
+Or use the launch file:
+```bash
+ros2 launch custom_robot_bringup auv.gazebo.launch.xml
+```
+

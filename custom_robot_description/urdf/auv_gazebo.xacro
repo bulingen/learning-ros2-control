@@ -1,0 +1,265 @@
+<?xml version="1.0"?>
+
+<robot name="auv" xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+    <xacro:include filename="common_properties.xacro" />
+    <!-- <xacro:include filename="auv_base.xacro" /> -->
+    <!-- <xacro:include filename="auv_basic.xacro" /> -->
+    <xacro:include filename="auv_basic2.xacro" />
+
+    <!-- <ros2_control name="Auv" type="system">
+        <hardware>
+
+            <plugin>mock_components/GenericSystem</plugin>
+        </hardware>
+
+    </ros2_control> -->
+
+    <!-- <gazebo>
+        <plugin filename="gz_ros2_control-system" name="gz_ros2_control::GazeboSimROS2ControlPlugin">
+            <parameters>$(find custom_robot_bringup)/config/auv_controllers.yaml</parameters>
+        </plugin>
+    </gazebo> -->
+
+    <!-- <gazebo reference="base_footprint">
+        <hejhej value="korv" />
+    </gazebo> -->
+
+
+    <gazebo>
+        <!-- <plugin name='gz::sim::systems::Hydrodynamics' filename='gz-sim-hydrodynamics-system'>
+
+            <xDotU>-1.1</xDotU>
+            <yDotV>-11.3</yDotV>
+            <zDotW>-11.3</zDotW>
+            <kDotP>0</kDotP>
+            <mDotQ>0</mDotQ>
+            <nDotR>0</nDotR>
+
+            <xU>-5</xU>
+            <yV>-12</yV>
+            <zW>-10</zW>
+            <kP>0</kP>
+            <mQ>0</mQ>
+            <nR>0</nR>
+
+            <xUabsU>-4.6</xUabsU>
+            <yVabsV>-60</yVabsV>
+            <zWabsW>-60</zWabsW>
+            <kPabsP>-0.05</kPabsP>
+            <mQabsQ>-0.5</mQabsQ>
+            <nRabsR>-5</nRabsR>
+
+            <link_name>base_footprint</link_name>
+
+        </plugin> -->
+
+        <plugin
+            filename="gz-sim-hydrodynamics-system"
+            name="gz::sim::systems::Hydrodynamics">
+            <link_name>base_link</link_name>
+
+            <!-- works but floats wierdly -->
+            <!-- <xUabsU>0</xUabsU>
+            <xU>-30</xU>
+            <yVabsV>0</yVabsV>
+            <yV>-30</yV>
+            <zWabsW>0</zWabsW>
+            <zW>-30</zW>
+            <kPabsP>0</kPabsP>
+            <kP>-15</kP>
+            <mQabsQ>0</mQabsQ>
+            <mQ>-15</mQ>
+            <nRabsR>0</nRabsR>
+            <nR>-15</nR> -->
+
+
+            <!-- it's like if the Dot params make it crash? -->
+            <!-- <water_density>1000</water_density> -->
+            <!-- <xDotU>-4.876161</xDotU>
+            <yDotV>-126.324739</yDotV>
+            <zDotW>-126.324739</zDotW> -->
+            <!-- <kDotP>0</kDotP> -->
+            <!-- <mDotQ>-33.46</mDotQ>
+            <nDotR>-33.46</nDotR> -->
+
+            <!-- <xUabsU>-6.2282</xUabsU>
+            <xU>0</xU>
+            <yVabsV>-601.27</yVabsV>
+            <yV>0</yV>
+            <zWabsW>-601.27</zWabsW>
+            <zW>0</zW>
+            <kPabsP>-0.1916</kPabsP>
+            <kP>0</kP>
+            <mQabsQ>-632.698957</mQabsQ>
+            <mQ>0</mQ>
+            <nRabsR>-632.698957</nRabsR>
+            <nR>0</nR> -->
+
+            <!-- here are my values again, without Dot -->
+            <!-- <xDotU>-1.1</xDotU>
+            <yDotV>-5</yDotV>
+            <zDotW>-5</zDotW>
+            <kDotP>0</kDotP>
+            <mDotQ>0</mDotQ>
+            <nDotR>0</nDotR>
+
+            <xU>-5</xU>
+            <yV>-12</yV>
+            <zW>-10</zW>
+            <kP>0</kP>
+            <mQ>0</mQ>
+            <nR>0</nR>
+
+            <xUabsU>-4.6</xUabsU>
+            <yVabsV>-60</yVabsV>
+            <zWabsW>-60</zWabsW>
+            <kPabsP>-0.05</kPabsP>
+            <mQabsQ>-0.5</mQabsQ>
+            <nRabsR>-5</nRabsR> -->
+
+            <!-- <water_density>1000</water_density>
+
+            <xDotU>0</xDotU>
+            <yDotV>0</yDotV>
+            <zDotW>0</zDotW>
+            <kDotP>0</kDotP>
+            <mDotQ>0</mDotQ>
+            <nDotR>0</nDotR>
+
+            <xU>0</xU>
+            <yV>0</yV>
+            <zW>0</zW>
+            <kP>0</kP>
+            <mQ>0</mQ>
+            <nR>0</nR>
+
+            <xUabsU>-33.800000000000004</xUabsU>
+            <yVabsV>-54.26875</yVabsV>
+            <zWabsW>-73.37135</zWabsW>
+            <kPabsP>-4.0</kPabsP>
+            <mQabsQ>-4.0</mQabsQ>
+            <nRabsR>-4.0</nRabsR> -->
+
+            <!-- from chatty -->
+            <!-- <xDotU>-1.020703453</xDotU> 
+            <yDotV>-5.207034532</yDotV> 
+            <zDotW>-5.207034532</zDotW> 
+            <kDotP>0.0</kDotP>
+            <mDotQ>0.0</mDotQ>
+            <nDotR>0.0</nDotR>
+
+            <xU>-5.0</xU>
+            <yV>-20.0</yV>
+            <zW>-20.0</zW>
+            
+            <xUabsU>-1.020703453</xUabsU>
+            <yVabsV>-68.400000000</yVabsV>
+            <zWabsW>-68.400000000</zWabsW>
+
+            <default_current>0 0 0</default_current> -->
+
+            <!-- partially stolen from tethys -->
+            <!-- <xDotU>-1.876161</xDotU>
+            <yDotV>-8.324739</yDotV>
+            <zDotW>-8.324739</zDotW>
+            <kDotP>0</kDotP>
+            <mDotQ>-33.46</mDotQ>
+            <nDotR>-33.46</nDotR>
+            <xUabsU>-6.2282</xUabsU>
+            <xU>0</xU>
+            <yVabsV>-601.27</yVabsV>
+            <yV>0</yV>
+            <zWabsW>-601.27</zWabsW>
+            <zW>0</zW>
+            <kPabsP>-0.1916</kPabsP>
+            <kP>0</kP>
+            <mQabsQ>-632.698957</mQabsQ>
+            <mQ>0</mQ>
+            <nRabsR>-632.698957</nRabsR>
+            <nR>0</nR> -->
+
+            <!-- <xUabsU>0</xUabsU>
+            <xU>-30</xU>
+            <yVabsV>0</yVabsV>
+            <yV>-30</yV>
+            <zWabsW>0</zWabsW>
+            <zW>-30</zW>
+            <kPabsP>0</kPabsP>
+            <kP>-15</kP>
+            <mQabsQ>0</mQabsQ>
+            <mQ>-15</mQ>
+            <nRabsR>0</nRabsR>
+            <nR>-15</nR> -->
+
+            <!-- <xDotU>-1.1</xDotU>
+            <yDotV>-5</yDotV>
+            <zDotW>-5</zDotW>
+            <kDotP>0</kDotP>
+            <mDotQ>0</mDotQ>
+            <nDotR>0</nDotR>
+            <xU>-5</xU>
+            <yV>-12</yV>
+            <zW>-10</zW>
+            <kP>0</kP>
+            <mQ>0</mQ>
+            <nR>0</nR>
+            <xUabsU>-4.6</xUabsU>
+            <yVabsV>-60</yVabsV>
+            <zWabsW>-60</zWabsW>
+            <kPabsP>-0.05</kPabsP>
+            <mQabsQ>-0.5</mQabsQ>
+            <nRabsR>-5</nRabsR> -->
+
+            <xDotU>-1.0</xDotU>
+            <yDotV>-5</yDotV>
+            <zDotW>-5</zDotW>
+            <kDotP>0</kDotP>
+            <mDotQ>0</mDotQ>
+            <nDotR>0</nDotR>
+            <xU>-5</xU>
+            <yV>-30</yV>
+            <zW>-30</zW>
+            <kP>0</kP>
+            <mQ>0</mQ>
+            <nR>0</nR>
+            <xUabsU>-4.6</xUabsU>
+            <yVabsV>-60</yVabsV>
+            <zWabsW>-60</zWabsW>
+            <kPabsP>-0.5</kPabsP>
+            <mQabsQ>-200</mQabsQ>
+            <nRabsR>-100</nRabsR>
+
+            <!-- <xDotU>-1.0</xDotU>
+            <yDotV>0</yDotV>
+            <zDotW>0</zDotW>
+            <kDotP>0</kDotP>
+            <mDotQ>0</mDotQ>
+            <nDotR>0</nDotR>
+            <xU>0</xU>
+            <yV>0</yV>
+            <zW>0</zW>
+            <kP>0</kP>
+            <mQ>0</mQ>
+            <nR>0</nR>
+            <xUabsU>0</xUabsU>
+            <yVabsV>0</yVabsV>
+            <zWabsW>0</zWabsW>
+            <kPabsP>0</kPabsP>
+            <mQabsQ>0</mQabsQ>
+            <nRabsR>0</nRabsR> -->
+
+
+        </plugin>
+        <!-- <plugin name="gz::sim::systems::Hydrodynamics"
+        filename="gz-waves1-hydrodynamics-system">
+            <enable>auv::base_link</enable>
+            <hydrodynamics>
+                <damping_on>1</damping_on>
+                <viscous_drag_on>1</viscous_drag_on>
+                <pressure_drag_on>1</pressure_drag_on>
+            </hydrodynamics>
+        </plugin> -->
+    </gazebo>
+
+</robot>
