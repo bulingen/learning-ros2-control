@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+
+<robot name="auv" xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+    <xacro:include filename="common_properties.xacro" />
+    <xacro:include filename="auv_basic2.xacro" />
+
+    <ros2_control name="Auv" type="system">
+        <hardware>
+            <plugin>mock_components/GenericSystem</plugin>
+            <param name="calculate_dynamics">true</param>
+        </hardware>
+
+        <joint name="cylinder_thruster_joint">
+            <command_interface name="velocity" />
+            <state_interface name="position" />
+            <state_interface name="velocity" />
+        </joint>
+    </ros2_control>
+
+</robot>

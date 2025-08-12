@@ -323,3 +323,12 @@ gz topic -t /auv/thruster0/cmd_thrust -m gz.msgs.Double -p 'data: 0.0'
 ```
 
 For future reference, here is a mapping table for ROS types vs GZ types: https://github.com/gazebosim/ros_gz/tree/jazzy/ros_gz_bridge
+
+
+## Launch auv with ros2 control but only in rviz
+
+```bash
+ros2 launch custom_robot_bringup auv.rviz.launch.xml
+
+ros2 topic pub /propeller_controller/commands std_msgs/msg/Float64MultiArray "{data: [10.0]}"
+```
