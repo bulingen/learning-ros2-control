@@ -1,6 +1,12 @@
 <?xml version="1.0"?>
 <robot name="auv" xmlns:xacro="http://www.ros.org/wiki/xacro">
 
+    <xacro:property name="base_length" value="1.0" />
+    <xacro:property name="base_radius" value="0.057" />
+    <xacro:property name="thruster_radius" value="0.045" />
+    <xacro:property name="thruster_thickness" value="0.01" />
+    <xacro:property name="thruster_offset" value="0.01" />
+
     <link name="base_link" />
 
     <joint name="base_to_cylinder" type="fixed">
@@ -13,7 +19,7 @@
         <visual>
             <origin xyz="0 0 0" rpy="0 ${pi/2} 0" />
             <geometry>
-                <cylinder length="1.0" radius="0.057" />
+                <cylinder length="${base_length}" radius="${base_radius}" />
             </geometry>
             <material name="color1">
                 <color rgba="0.8 0.8 0.8 1" />
@@ -22,7 +28,7 @@
 
         <collision>
             <geometry>
-                <box size="1 0.114 0.114" />
+                <box size="${base_length} ${base_radius*2} ${base_radius*2}" />
             </geometry>
             <origin xyz="0 0 0" rpy="0 0 0" />
         </collision>
@@ -45,5 +51,45 @@
         </inertial>
 
     </link>
+
+    <link name="thruster_link">
+        <visual>
+            <origin xyz="0 0 0" rpy="0 0 0" />
+            <geometry>
+                <!-- <cylinder length="${thruster_thickness}" radius="${thruster_radius}" /> -->
+                <box size="${thruster_thickness} ${thruster_radius*2} ${thruster_thickness}" />
+            </geometry>
+            <material name="blueish">
+                <color rgba="0.3 0.3 0.9 1" />
+            </material>
+        </visual>
+        <collision>
+            <origin xyz="0 0 0" rpy="0 0 0" />
+            <geometry>
+                <!-- <cylinder length="${thruster_thickness}" radius="${thruster_radius}" /> -->
+                <!-- <box size="${thruster_thickness} ${thruster_radius*2} ${thruster_radius*2}" /> -->
+                <sphere radius="0.005" />
+            </geometry>
+        </collision>
+        <xacro:sphere_inertia m="0.001" r="0.005"
+            o_xyz="0 0 0" o_rpy="0 0 0" />
+        <!-- <inertial>
+            <origin xyz="0 0 0" rpy="0 0 0" />
+            <mass value="0.001" />
+            <inertia ixx="1e-4" ixy="0" ixz="0" iyy="1e-4" iyz="0" izz="1e-4" />
+        </inertial> -->
+    </link>
+
+    <joint name="cylinder_thruster_joint" type="continuous">
+        <parent link="cylinder_link" />
+        <child link="thruster_link" />
+        <origin xyz="-${base_length/2 + thruster_thickness/2 + thruster_offset} 0 0" rpy="0 0 0" />
+        <axis xyz="1 0 0" />
+        <limit lower="0" upper="100" effort="100" velocity="100" />
+
+        <!-- <axis xyz="0 0 1" /> -->
+        <!-- <limit lower="0" upper="${pi/2}" effort="100" velocity="100" />
+        <dynamics friction="0.05" damping="0.1" /> -->
+    </joint>
 
 </robot>

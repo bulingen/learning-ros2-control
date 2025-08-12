@@ -301,7 +301,25 @@ ros2 run ros_gz_sim create -topic robot_description -z -5.0
 ```
 
 Or use the launch file:
+
 ```bash
 ros2 launch custom_robot_bringup auv.gazebo.launch.xml
 ```
 
+Then, move it forward like this:
+
+```bash
+ros2 run custom_robot_teleop cmd_vel_to_single_array --ros-args -p in:=/propeller_controller/commands -p out:=/cmd_thrust
+
+ros2 topic pub /cmd_thrust std_msgs/msg/Float64 "{data: 0.0}"
+```
+
+**Details**
+
+Bridging ROS commands to these kinds of GZ commands:
+
+```bash
+gz topic -t /auv/thruster0/cmd_thrust -m gz.msgs.Double -p 'data: 0.0'
+```
+
+For future reference, here is a mapping table for ROS types vs GZ types: https://github.com/gazebosim/ros_gz/tree/jazzy/ros_gz_bridge
