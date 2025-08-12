@@ -20,6 +20,7 @@ setup(
     entry_points={
         "console_scripts": [
             "cmd_vel_to_single_array = custom_robot_teleop.cmd_vel_to_single_array:main",
+            "auv_twist_mapper = custom_robot_teleop.auv_twist_mapper:main",
         ],
     },
 )

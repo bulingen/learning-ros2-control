@@ -309,9 +309,9 @@ ros2 launch custom_robot_bringup auv.gazebo.launch.xml
 Then, move it forward like this:
 
 ```bash
-ros2 run custom_robot_teleop cmd_vel_to_single_array --ros-args -p in:=/propeller_controller/commands -p out:=/cmd_thrust
+ros2 run custom_robot_teleop auv_twist_mapper
 
-ros2 topic pub /cmd_thrust std_msgs/msg/Float64 "{data: 0.0}"
+ros2 run teleop_twist_keyboard teleop_twist_keyboard --ros-args -p rate:=20
 ```
 
 **Details**
