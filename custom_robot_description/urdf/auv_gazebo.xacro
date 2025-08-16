@@ -17,7 +17,7 @@
             <mDotQ>0</mDotQ>
             <nDotR>0</nDotR>
             <xU>-5</xU>
-            <yV>-30</yV>
+            <yV>-100</yV>
             <zW>-30</zW>
             <kP>0</kP>
             <mQ>0</mQ>
@@ -27,7 +27,7 @@
             <zWabsW>-60</zWabsW>
             <kPabsP>-0.5</kPabsP>
             <mQabsQ>-200</mQabsQ>
-            <nRabsR>-100</nRabsR>
+            <nRabsR>-20</nRabsR>
         </plugin>
     </gazebo>
 
