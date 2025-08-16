@@ -332,3 +332,10 @@ ros2 launch custom_robot_bringup auv.rviz.launch.xml
 
 ros2 topic pub /propeller_controller/commands std_msgs/msg/Float64MultiArray "{data: [10.0]}"
 ```
+
+**Launch thruster in rviz**
+
+```bash
+ros2 launch custom_robot_description display_thruster.launch.xml
+```
+

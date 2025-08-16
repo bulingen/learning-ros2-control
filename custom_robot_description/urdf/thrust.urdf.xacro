@@ -1,0 +1,50 @@
+<?xml version="1.0"?>
+<robot name="auv_thruster" xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+    <xacro:include filename="common_properties.xacro" />
+    <xacro:include filename="auv_thrust.xacro" />
+
+    <xacro:property name="foundation_side" value="0.2" />
+
+    <link name="base_link"></link>
+
+    <joint name="base_foundation_joint" type="fixed">
+        <parent link="base_link" />
+        <child link="foundation_link" />
+        <origin xyz="0 0 ${foundation_side/2}" />
+    </joint>
+
+    <link name="foundation_link">
+        <visual>
+            <origin xyz="0 0 0" rpy="0 0 0" />
+            <geometry>
+                <box size="${foundation_side} ${foundation_side} ${foundation_side}" />
+            </geometry>
+            <material name="grey">
+                <color rgba="0.8 0.8 0.8 1" />
+            </material>
+        </visual>
+        <collision>
+            <origin xyz="0 0 0" rpy="0 0 0" />
+            <geometry>
+                <box size="${foundation_side} ${foundation_side} ${foundation_side}" />
+            </geometry>
+        </collision>
+        <xacro:box_inertia
+            m="100"
+            x="${foundation_side}"
+            y="${foundation_side}"
+            z="${foundation_side}"
+            o_xyz="0 0 0"
+            o_rpy="0 0 0"
+        />
+    </link>
+
+    <joint name="base_rudder_base_joint" type="fixed">
+        <parent link="foundation_link" />
+        <child link="rudder_base" />
+        <origin xyz="${foundation_side/2} 0 0" rpy="0 0 0" />
+    </joint>
+
+
+</robot>
