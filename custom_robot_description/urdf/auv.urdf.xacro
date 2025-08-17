@@ -2,7 +2,14 @@
 <robot name="auv" xmlns:xacro="http://www.ros.org/wiki/xacro">
 
     <xacro:include filename="common_properties.xacro" />
-    <!-- <xacro:include filename="auv_basic2.xacro" /> -->
-    <xacro:include filename="steerable_propeller.xacro" />
+    <xacro:include filename="auv_basic2.xacro" />
+    <xacro:include filename="auv_thrust.xacro" />
+
+
+    <joint name="base_rudder_base_joint" type="fixed">
+        <parent link="cylinder_link" />
+        <child link="rudder_base" />
+        <origin xyz="-${base_length/2} 0 0" rpy="0 0 ${pi}" />
+    </joint>
 
 </robot>

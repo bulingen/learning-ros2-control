@@ -2,8 +2,7 @@
 
 <robot name="auv" xmlns:xacro="http://www.ros.org/wiki/xacro">
 
-    <xacro:include filename="common_properties.xacro" />
-    <xacro:include filename="auv_basic2.xacro" />
+    <xacro:include filename="auv.urdf.xacro" />
 
     <ros2_control name="Auv" type="system">
         <hardware>
@@ -15,6 +14,15 @@
             <command_interface name="velocity" />
             <state_interface name="position" />
             <state_interface name="velocity" />
+        </joint>
+
+        <joint name="yaw_joint">
+            <command_interface name="position" />
+            <state_interface name="position" />
+        </joint>
+        <joint name="pitch_joint">
+            <command_interface name="position" />
+            <state_interface name="position" />
         </joint>
     </ros2_control>
 

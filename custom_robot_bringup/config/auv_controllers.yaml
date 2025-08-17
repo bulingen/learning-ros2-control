@@ -8,7 +8,15 @@ controller_manager:
     propeller_controller:
       type: velocity_controllers/JointGroupVelocityController
 
+    rudder_controller:
+      type: forward_command_controller/ForwardCommandController
+
 propeller_controller:
   ros__parameters:
     joints:
       - cylinder_thruster_joint
+
+rudder_controller:
+  ros__parameters:
+    joints: ["pitch_joint", "yaw_joint"]
+    interface_name: "position"
